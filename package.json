@@ -1,0 +1,47 @@
+{
+  "name": "@neofinancial/action-prlint",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Verify that your pull request titles start with a ticket ID",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "pack": "ncc build",
+    "test": "jest",
+    "all": "npm run build && npm run format && npm run lint && npm run pack && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neofinancial/action-prlint.git"
+  },
+  "keywords": [
+    "actions",
+    "node",
+    "setup"
+  ],
+  "author": "Austin Paquette <austin.paquette@neofinancial.com>",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.5",
+    "@typescript-eslint/parser": "^2.8.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^5.16.0",
+    "eslint-plugin-github": "^2.0.0",
+    "eslint-plugin-jest": "^22.21.0",
+    "jest": "^24.9.0",
+    "jest-circus": "^24.9.0",
+    "js-yaml": "^3.13.1",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.6.4"
+  },
+  "license": "MIT"
+}

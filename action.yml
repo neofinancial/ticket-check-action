@@ -1,0 +1,56 @@
+name: 'Pull Request Title Linter'
+description: ' Verify that your pull request titles start with a ticket ID'
+author: 'Austin Paquette'
+
+inputs:
+  ticketPrefix:
+    description: 'Title Regex'
+    default: '#'
+    required: true
+
+  titleFormat:
+    description: 'Title Regex'
+    default: '%prefix%%id%: %title%'
+    required: true
+
+  titleRegex:
+    description: 'Title Regex'
+    default: '^(CH)(-?)(\d{3,})'
+    required: true
+  
+  titleRegexFlags:
+    description: 'Title Regular Express Flags'
+    default: 'gi'
+    required: true
+
+  bodyRegex:
+    description: 'Body Ticket Shorthand Regex'
+    default: '(CH)(-?)(\d{3,})'
+    required: true
+  
+  bodyRegexFlags:
+    description: 'Title Regular Express Flags'
+    default: 'gim'
+    required: true
+
+  bodyURLRegex:
+    description: 'Title Regex'
+    default: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
+    required: true
+  
+  bodyURLRegexFlags:
+    description: 'Title Regular Express Flags'
+    default: 'gim'
+    required: true
+
+  token:
+    description: 'GitHub Authentication Token'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'
