@@ -28,35 +28,108 @@ If no ticket/issue ID is in the title, it will extract the ID from the body and 
 
 ## Usage
 
-In your `.github/workflows` folder, create a new `pull_request_linting.yml` file with the following contents.
+In your `.github/workflows` folder, create a new `pull_request_linting.yml` file with the respective contents based on your needs.
+
+The examples provided require some customizations unique to your codebase or issue tracking. If you're unfamiliar with building a regex, check out [Regexr](https://regexr.com/).
+
+Make sure you check for the following to swap out with your values.
+
+- `:owner` / `:org` - used in the **all** examples
+- `:repo` - used only in the GitHub example
+
+## Examples
+
+<details open>
+  <summary>GitHub</summary>
 
 ```yml
-# This is a basic workflow to help you get started with Actions
 name: Pull Request Linting
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   pull_request:
     types: ["opened", "edited", "reopened", "synchronize"]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "title"
   title:
     name: "Title"
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: PR Lint GitHub Action
+        uses: neofinancial/action-prlint@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ticketPrefix: "#"
+          titleRegex: '^#(\d+)'
+          bodyRegex: '#(\d+)'
+          bodyURLRegex: 'http(s?):\/\/(github.com)(\/:owner)(\/:repo)(\/issues)\/\d+'
+```
+</details>
+
+<details>
+  <summary>JIRA</summary>
+
+```yml
+name: Pull Request Linting
+
+on:
+  pull_request:
+    types: ["opened", "edited", "reopened", "synchronize"]
+
+jobs:
+  title:
+    name: "Title"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: PR Lint GitHub Action
+        uses: neofinancial/action-prlint@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ticketPrefix: "PROJ-"
+          titleRegex: '^PROJ-(\d+)'
+          bodyRegex: 'PROJ-(\d+)'
+          bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)\d+'
+```
+</details>
+
+<details>
+  <summary>Clubhouse</summary>
+
+```yml
+name: Pull Request Linting
+
+on:
+  pull_request:
+    types: ["opened", "edited", "reopened", "synchronize"]
+
+jobs:
+  title:
+    name: "Title"
+    runs-on: ubuntu-latest
+
     steps:
       - name: PR Lint GitHub Action
         uses: neofinancial/action-prlint@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: "CH-"
-          titleFormat: "%prefix%%id%: %title%"
           titleRegex: '^(CH)(-?)(\d{3,})'
           bodyRegex: '(CH)(-?)(\d{3,})'
-          bodyURLRegex: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
+          bodyURLRegex: 'http(s?):\/\/(app.clubhouse.io)(\/:org)(\/story)\/\d+'
 ```
+</details>
+
+## Inputs
+
+|Name | Required | Description| default |
+|---|----|---|---|
+| token | ✅ | The GitHub provided access token |  |
+| ticketPrefix | no | The unique identifier for the ticket/issue | # |
+| titleFormat | no | The intended format the title should be edited to it if does not match the regex. Contains variables `%prefix%`, `%id%`, and `%title%` | %prefix%%id%: %title% |
+| titleRegex | no | The regular expression used to search the title for the intended format| ^#(\d+)|
+| titleRegexFlags | no | The flags applied to the title regex | gi |
+| bodyRegex | no | The regular expression used to search the body for a shorthand reference (example `#123`) |#(\d+) |
+| bodyRegexFlags | no | The flags applied to the body regex whilst searching for the reference | gim |
+| bodyURLRegex | no | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/Hello-World/issues/1`) |  |
+| bodyURLRegexFlags | no | The flags applied to the body regex whilst searching for the URL reference | gim |
