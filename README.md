@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-  PR Title Linter (GitHub Action)
+  Pull Request Title Linter
 </h1>
 
 <h3 align="center">
