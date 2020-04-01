@@ -17,7 +17,7 @@ inputs:
     description: 'Title Regex'
     default: '^(CH)(-?)(\d{3,})'
     required: true
-  
+
   titleRegexFlags:
     description: 'Title Regular Express Flags'
     default: 'gi'
@@ -27,7 +27,7 @@ inputs:
     description: 'Body Ticket Shorthand Regex'
     default: '(CH)(-?)(\d{3,})'
     required: true
-  
+
   bodyRegexFlags:
     description: 'Title Regular Express Flags'
     default: 'gim'
@@ -37,7 +37,7 @@ inputs:
     description: 'Title Regex'
     default: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
     required: true
-  
+
   bodyURLRegexFlags:
     description: 'Title Regular Express Flags'
     default: 'gim'
@@ -49,7 +49,7 @@ inputs:
 
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'build/index.js'
 
 branding:
   icon: 'git-pull-request'

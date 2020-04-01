@@ -1,0 +1,7 @@
+{
+  "extends": "eslint-config-neo/config-backend",
+  "rules": {
+    "no-console": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+  }
+}

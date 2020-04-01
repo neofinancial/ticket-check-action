@@ -1,0 +1,38 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        node: [8, 10, 12]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: Lint
+        run: yarn lint
+      - name: Build
+        run: yarn build
+      - name: Commit distribution build
+        uses: endbug/add-and-commit@v4
+        with:
+          add: "dist"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

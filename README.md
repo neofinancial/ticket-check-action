@@ -1,22 +1,8 @@
-<p align="center">
-  <a href="https://neofinancial.com">
-    <img alt="Neo Financial" src="./.github/images/wordmark.svg" height="35" />
-  </a>
-</p>
+# Pull Request Title Linter
 
-<h1 align="center">
-  Pull Request Title Linter
-</h1>
+[![Build status](https://github.com/neofinancial/pr-title-action/workflows/CI/badge.svg)](https://github.com/neofinancial/pr-title-action/actions)
 
-<h3 align="center">
-  Verify that your pull request titles start with a ticket ID
-</h3>
-
-<p align="center">
-  <a href="https://github.com/neofinancial/action-prlint/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Released under the MIT license." />
-  </a>
-</p>
+Verify that your pull request titles start with a ticket ID
 
 ## Introduction
 
