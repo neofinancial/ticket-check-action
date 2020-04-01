@@ -1,9 +1,9 @@
-name: Pack for Distribution
+name: 'Pack for Distribution'
 on: push
 
 jobs:
   run:
-    name: Lint with ESLint
+    name: 'Build for Distribution'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
