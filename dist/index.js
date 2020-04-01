@@ -2001,6 +2001,7 @@ function checkMode (stat, options) {
 
 "use strict";
 
+/* eslint-disable @typescript-eslint/camelcase */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2010,16 +2011,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const core = __importStar(__webpack_require__(470));
-const github = __importStar(__webpack_require__(469));
+const core_1 = __webpack_require__(470);
+const github_1 = __webpack_require__(469);
 // Helper function to retrieve digits from a string (be it a ticket string or a full URL)
 const extractId = (value) => {
     const result = value.match(/\d+/);
@@ -2029,60 +2023,60 @@ const extractId = (value) => {
     return null;
 };
 function run() {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            core.debug("Inside try block");
+            core_1.debug('Inside try block');
             // Check for a Clubhouse Ticket Reference in the Title
-            const title = (_c = (_b = (_a = github.context) === null || _a === void 0 ? void 0 : _a.payload) === null || _b === void 0 ? void 0 : _b.pull_request) === null || _c === void 0 ? void 0 : _c.title;
-            const titleRegexBase = core.getInput("titleRegex", { required: true });
-            const titleRegexFlags = core.getInput("titleRegexFlags", {
+            const title = (_b = (_a = github_1.context === null || github_1.context === void 0 ? void 0 : github_1.context.payload) === null || _a === void 0 ? void 0 : _a.pull_request) === null || _b === void 0 ? void 0 : _b.title;
+            const titleRegexBase = core_1.getInput('titleRegex', { required: true });
+            const titleRegexFlags = core_1.getInput('titleRegexFlags', {
                 required: true
             });
             const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
             const titleCheck = title.match(titleRegex);
             // Return and approve if the title includes a Ticket ID
             if (titleCheck !== null) {
-                core.debug("Title includes a ticket ID.");
-                core.debug("Exiting...");
+                core_1.debug('Title includes a ticket ID.');
+                core_1.debug('Exiting...');
                 return;
             }
             else {
-                core.debug("Title does not include a ticket ID.");
-                core.debug("Continuing...");
+                core_1.debug('Title does not include a ticket ID.');
+                core_1.debug('Continuing...');
             }
-            core.debug(title);
+            core_1.debug(title);
             // Retrieve the Pull Request body contents and verify it's not empty
-            const body = (_f = (_e = (_d = github.context) === null || _d === void 0 ? void 0 : _d.payload) === null || _e === void 0 ? void 0 : _e.pull_request) === null || _f === void 0 ? void 0 : _f.body;
+            const body = (_d = (_c = github_1.context === null || github_1.context === void 0 ? void 0 : github_1.context.payload) === null || _c === void 0 ? void 0 : _c.pull_request) === null || _d === void 0 ? void 0 : _d.body;
             if (body === undefined) {
-                core.debug("Body is undefined.");
-                core.setFailed("Could not retrieve the Pull Request body");
-                core.debug("Exiting...");
+                core_1.debug('Body is undefined.');
+                core_1.setFailed('Could not retrieve the Pull Request body');
+                core_1.debug('Exiting...');
                 return;
             }
             else {
-                core.debug("Body contains content.");
-                core.debug("Continuing...");
+                core_1.debug('Body contains content.');
+                core_1.debug('Continuing...');
             }
             // Instantiate a GitHub Client Instance
-            const token = core.getInput("token", { required: true });
-            const client = new github.GitHub(token);
-            const pullRequest = github.context.issue;
-            core.debug("Connected to GitHub Client.");
-            core.debug("Continuing...");
+            const token = core_1.getInput('token', { required: true });
+            const client = new github_1.GitHub(token);
+            const pullRequest = github_1.context.issue;
+            core_1.debug('Connected to GitHub Client.');
+            core_1.debug('Continuing...');
             // Check for a Clubhouse Ticket Reference Number found in the body
-            const bodyRegexBase = core.getInput("bodyRegex", { required: true });
-            const bodyRegexFlags = core.getInput("bodyRegexFlags", { required: true });
+            const bodyRegexBase = core_1.getInput('bodyRegex', { required: true });
+            const bodyRegexFlags = core_1.getInput('bodyRegexFlags', { required: true });
             const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
             // Load in the requested title format and ticket prefix
-            const ticketPrefix = core.getInput("ticketPrefix", { required: true });
-            const titleFormat = core.getInput("titleFormat", { required: true });
+            const ticketPrefix = core_1.getInput('ticketPrefix', { required: true });
+            const titleFormat = core_1.getInput('titleFormat', { required: true });
             if (bodyCheck !== null) {
-                core.debug("Body contains a reference to a ticket.");
-                core.debug(`Updating the title`);
+                core_1.debug('Body contains a reference to a ticket.');
+                core_1.debug(`Updating the title`);
                 const id = extractId(bodyCheck[0]);
                 if (id === null) {
-                    core.setFailed("Count not extract a Ticket ID from the body");
+                    core_1.setFailed('Count not extract a Ticket ID from the body');
                     return;
                 }
                 client.pulls.update({
@@ -2090,37 +2084,37 @@ function run() {
                     repo: pullRequest.repo,
                     number: pullRequest.number,
                     title: titleFormat
-                        .replace("%prefix%", ticketPrefix)
-                        .replace("%id%", id)
-                        .replace("%title%", title)
+                        .replace('%prefix%', ticketPrefix)
+                        .replace('%id%', id)
+                        .replace('%title%', title)
                 });
                 client.pulls.createReview({
                     owner: pullRequest.owner,
                     repo: pullRequest.repo,
                     pull_number: pullRequest.number,
                     body: "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-                    event: "COMMENT"
+                    event: 'COMMENT'
                 });
                 return;
             }
             else {
-                core.debug("Body does NOT contain a reference to a ticket.");
-                core.debug("Continuing...");
+                core_1.debug('Body does NOT contain a reference to a ticket.');
+                core_1.debug('Continuing...');
             }
             // Last Ditch Effort
             // Check for a Clubhouse Ticket Reference URL linked in the body
-            const bodyURLRegexBase = core.getInput("bodyURLRegex", { required: true });
-            const bodyURLRegexFlags = core.getInput("bodyURLRegexFlags", {
+            const bodyURLRegexBase = core_1.getInput('bodyURLRegex', { required: true });
+            const bodyURLRegexFlags = core_1.getInput('bodyURLRegexFlags', {
                 required: true
             });
             const bodyURLRegex = new RegExp(bodyURLRegexBase, bodyURLRegexFlags);
             const bodyURLCheck = body.match(bodyURLRegex);
             if (bodyURLCheck !== null) {
-                core.debug("This Pull Request body contains a URL to a ticket.");
-                core.debug(`Updating the Pull Request title`);
+                core_1.debug('This Pull Request body contains a URL to a ticket.');
+                core_1.debug(`Updating the Pull Request title`);
                 const id = extractId(bodyURLCheck[0]);
                 if (id === null) {
-                    core.setFailed("Count not extract a Ticket ID from the body");
+                    core_1.setFailed('Count not extract a Ticket ID from the body');
                     return;
                 }
                 client.pulls.update({
@@ -2128,32 +2122,32 @@ function run() {
                     repo: pullRequest.repo,
                     number: pullRequest.number,
                     title: titleFormat
-                        .replace("%prefix%", ticketPrefix)
-                        .replace("%id%", id)
-                        .replace("%title%", title)
+                        .replace('%prefix%', ticketPrefix)
+                        .replace('%id%', id)
+                        .replace('%title%', title)
                 });
                 client.pulls.createReview({
                     owner: pullRequest.owner,
                     repo: pullRequest.repo,
                     pull_number: pullRequest.number,
                     body: "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-                    event: "COMMENT"
+                    event: 'COMMENT'
                 });
             }
             else {
-                core.debug("Body does NOT contain a URL to a ticket.");
-                core.debug("Continuing...");
+                core_1.debug('Body does NOT contain a URL to a ticket.');
+                core_1.debug('Continuing...');
             }
-            core.debug(body);
+            core_1.debug(body);
             if (titleCheck === null && bodyCheck === null && bodyURLCheck === null) {
-                core.debug("Body does NOT contain a any reference to a ticket.");
-                core.setFailed("No ticket was referenced in this pull request.");
-                core.debug("Exiting...");
+                core_1.debug('Body does NOT contain a any reference to a ticket.');
+                core_1.setFailed('No ticket was referenced in this pull request.');
+                core_1.debug('Exiting...');
                 return;
             }
         }
         catch (error) {
-            core.setFailed(error.message);
+            core_1.setFailed(error.message);
         }
     });
 }
@@ -2195,70 +2189,7 @@ exports.getUserAgent = getUserAgent;
 /***/ 215:
 /***/ (function(module) {
 
-module.exports = {"name":"@octokit/rest","version":"16.43.1","publishConfig":{"access":"public"},"description":"GitHub REST API client for Node.js","keywords":["octokit","github","rest","api-client"],"author":"Gregor Martynus (https://github.com/gr2m)","contributors":[{"name":"Mike de Boer","email":"info@mikedeboer.nl"},{"name":"Fabian Jakobs","email":"fabian@c9.io"},{"name":"Joe Gallo","email":"joe@brassafrax.com"},{"name":"Gregor Martynus","url":"https://github.com/gr2m"}],"repository":"https://github.com/octokit/rest.js","dependencies":{"@octokit/auth-token":"^2.4.0","@octokit/plugin-paginate-rest":"^1.1.1","@octokit/plugin-request-log":"^1.0.0","@octokit/plugin-rest-endpoint-methods":"2.4.0","@octokit/request":"^5.2.0","@octokit/request-error":"^1.0.2","atob-lite":"^2.0.0","before-after-hook":"^2.0.0","btoa-lite":"^1.0.0","deprecation":"^2.0.0","lodash.get":"^4.4.2","lodash.set":"^4.3.2","lodash.uniq":"^4.5.0","octokit-pagination-methods":"^1.1.0","once":"^1.4.0","universal-user-agent":"^4.0.0"},"devDependencies":{"@gimenete/type-writer":"^0.1.3","@octokit/auth":"^1.1.1","@octokit/fixtures-server":"^5.0.6","@octokit/graphql":"^4.2.0","@types/node":"^13.1.0","bundlesize":"^0.18.0","chai":"^4.1.2","compression-webpack-plugin":"^3.1.0","cypress":"^3.0.0","glob":"^7.1.2","http-proxy-agent":"^4.0.0","lodash.camelcase":"^4.3.0","lodash.merge":"^4.6.1","lodash.upperfirst":"^4.3.1","lolex":"^5.1.2","mkdirp":"^1.0.0","mocha":"^7.0.1","mustache":"^4.0.0","nock":"^11.3.3","npm-run-all":"^4.1.2","nyc":"^15.0.0","prettier":"^1.14.2","proxy":"^1.0.0","semantic-release":"^17.0.0","sinon":"^8.0.0","sinon-chai":"^3.0.0","sort-keys":"^4.0.0","string-to-arraybuffer":"^1.0.0","string-to-jsdoc-comment":"^1.0.0","typescript":"^3.3.1","webpack":"^4.0.0","webpack-bundle-analyzer":"^3.0.0","webpack-cli":"^3.0.0"},"types":"index.d.ts","scripts":{"coverage":"nyc report --reporter=html && open coverage/index.html","lint":"prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","lint:fix":"prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","pretest":"npm run -s lint","test":"nyc mocha test/mocha-node-setup.js \"test/*/**/*-test.js\"","test:browser":"cypress run --browser chrome","build":"npm-run-all build:*","build:ts":"npm run -s update-endpoints:typescript","prebuild:browser":"mkdirp dist/","build:browser":"npm-run-all build:browser:*","build:browser:development":"webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json","build:browser:production":"webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map","generate-bundle-report":"webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html","update-endpoints":"npm-run-all update-endpoints:*","update-endpoints:fetch-json":"node scripts/update-endpoints/fetch-json","update-endpoints:typescript":"node scripts/update-endpoints/typescript","prevalidate:ts":"npm run -s build:ts","validate:ts":"tsc --target es6 --noImplicitAny index.d.ts","postvalidate:ts":"tsc --noEmit --target es6 test/typescript-validate.ts","start-fixtures-server":"octokit-fixtures-server"},"license":"MIT","files":["index.js","index.d.ts","lib","plugins"],"nyc":{"ignore":["test"]},"release":{"publish":["@semantic-release/npm",{"path":"@semantic-release/github","assets":["dist/*","!dist/*.map.gz"]}]},"bundlesize":[{"path":"./dist/octokit-rest.min.js.gz","maxSize":"33 kB"}]};
-
-/***/ }),
-
-/***/ 257:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var deprecation = __webpack_require__(692);
-var once = _interopDefault(__webpack_require__(969));
-
-const logOnce = once(deprecation => console.warn(deprecation));
-/**
- * Error with extra properties to help with debugging
- */
-
-class RequestError extends Error {
-  constructor(message, statusCode, options) {
-    super(message); // Maintains proper stack trace (only available on V8)
-
-    /* istanbul ignore next */
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
-
-    this.name = "HttpError";
-    this.status = statusCode;
-    Object.defineProperty(this, "code", {
-      get() {
-        logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
-        return statusCode;
-      }
-
-    });
-    this.headers = options.headers || {}; // redact request credentials without mutating original request options
-
-    const requestCopy = Object.assign({}, options.request);
-
-    if (options.request.headers.authorization) {
-      requestCopy.headers = Object.assign({}, options.request.headers, {
-        authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
-      });
-    }
-
-    requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
-    // see https://developer.github.com/v3/#increasing-the-unauthenticated-rate-limit-for-oauth-applications
-    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
-    // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
-    .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
-    this.request = requestCopy;
-  }
-
-}
-
-exports.RequestError = RequestError;
-//# sourceMappingURL=index.js.map
-
+module.exports = {"_from":"@octokit/rest@^16.43.1","_id":"@octokit/rest@16.43.1","_inBundle":false,"_integrity":"sha512-gfFKwRT/wFxq5qlNjnW2dh+qh74XgTQ2B179UX5K1HYCluioWj8Ndbgqw2PVqa1NnVJkGHp2ovMpVn/DImlmkw==","_location":"/@octokit/rest","_phantomChildren":{"@octokit/types":"2.5.1","deprecation":"2.3.1","once":"1.4.0"},"_requested":{"type":"range","registry":true,"raw":"@octokit/rest@^16.43.1","name":"@octokit/rest","escapedName":"@octokit%2frest","scope":"@octokit","rawSpec":"^16.43.1","saveSpec":null,"fetchSpec":"^16.43.1"},"_requiredBy":["/@actions/github"],"_resolved":"https://registry.npmjs.org/@octokit/rest/-/rest-16.43.1.tgz","_shasum":"3b11e7d1b1ac2bbeeb23b08a17df0b20947eda6b","_spec":"@octokit/rest@^16.43.1","_where":"/home/runner/work/action-prlint/action-prlint/node_modules/@actions/github","author":{"name":"Gregor Martynus","url":"https://github.com/gr2m"},"bugs":{"url":"https://github.com/octokit/rest.js/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/octokit-rest.min.js.gz","maxSize":"33 kB"}],"contributors":[{"name":"Mike de Boer","email":"info@mikedeboer.nl"},{"name":"Fabian Jakobs","email":"fabian@c9.io"},{"name":"Joe Gallo","email":"joe@brassafrax.com"},{"name":"Gregor Martynus","url":"https://github.com/gr2m"}],"dependencies":{"@octokit/auth-token":"^2.4.0","@octokit/plugin-paginate-rest":"^1.1.1","@octokit/plugin-request-log":"^1.0.0","@octokit/plugin-rest-endpoint-methods":"2.4.0","@octokit/request":"^5.2.0","@octokit/request-error":"^1.0.2","atob-lite":"^2.0.0","before-after-hook":"^2.0.0","btoa-lite":"^1.0.0","deprecation":"^2.0.0","lodash.get":"^4.4.2","lodash.set":"^4.3.2","lodash.uniq":"^4.5.0","octokit-pagination-methods":"^1.1.0","once":"^1.4.0","universal-user-agent":"^4.0.0"},"deprecated":false,"description":"GitHub REST API client for Node.js","devDependencies":{"@gimenete/type-writer":"^0.1.3","@octokit/auth":"^1.1.1","@octokit/fixtures-server":"^5.0.6","@octokit/graphql":"^4.2.0","@types/node":"^13.1.0","bundlesize":"^0.18.0","chai":"^4.1.2","compression-webpack-plugin":"^3.1.0","cypress":"^3.0.0","glob":"^7.1.2","http-proxy-agent":"^4.0.0","lodash.camelcase":"^4.3.0","lodash.merge":"^4.6.1","lodash.upperfirst":"^4.3.1","lolex":"^5.1.2","mkdirp":"^1.0.0","mocha":"^7.0.1","mustache":"^4.0.0","nock":"^11.3.3","npm-run-all":"^4.1.2","nyc":"^15.0.0","prettier":"^1.14.2","proxy":"^1.0.0","semantic-release":"^17.0.0","sinon":"^8.0.0","sinon-chai":"^3.0.0","sort-keys":"^4.0.0","string-to-arraybuffer":"^1.0.0","string-to-jsdoc-comment":"^1.0.0","typescript":"^3.3.1","webpack":"^4.0.0","webpack-bundle-analyzer":"^3.0.0","webpack-cli":"^3.0.0"},"files":["index.js","index.d.ts","lib","plugins"],"homepage":"https://github.com/octokit/rest.js#readme","keywords":["octokit","github","rest","api-client"],"license":"MIT","name":"@octokit/rest","nyc":{"ignore":["test"]},"publishConfig":{"access":"public"},"release":{"publish":["@semantic-release/npm",{"path":"@semantic-release/github","assets":["dist/*","!dist/*.map.gz"]}]},"repository":{"type":"git","url":"git+https://github.com/octokit/rest.js.git"},"scripts":{"build":"npm-run-all build:*","build:browser":"npm-run-all build:browser:*","build:browser:development":"webpack --mode development --entry . --output-library=Octokit --output=./dist/octokit-rest.js --profile --json > dist/bundle-stats.json","build:browser:production":"webpack --mode production --entry . --plugin=compression-webpack-plugin --output-library=Octokit --output-path=./dist --output-filename=octokit-rest.min.js --devtool source-map","build:ts":"npm run -s update-endpoints:typescript","coverage":"nyc report --reporter=html && open coverage/index.html","generate-bundle-report":"webpack-bundle-analyzer dist/bundle-stats.json --mode=static --no-open --report dist/bundle-report.html","lint":"prettier --check '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","lint:fix":"prettier --write '{lib,plugins,scripts,test}/**/*.{js,json,ts}' 'docs/*.{js,json}' 'docs/src/**/*' index.js README.md package.json","postvalidate:ts":"tsc --noEmit --target es6 test/typescript-validate.ts","prebuild:browser":"mkdirp dist/","pretest":"npm run -s lint","prevalidate:ts":"npm run -s build:ts","start-fixtures-server":"octokit-fixtures-server","test":"nyc mocha test/mocha-node-setup.js \"test/*/**/*-test.js\"","test:browser":"cypress run --browser chrome","update-endpoints":"npm-run-all update-endpoints:*","update-endpoints:fetch-json":"node scripts/update-endpoints/fetch-json","update-endpoints:typescript":"node scripts/update-endpoints/typescript","validate:ts":"tsc --target es6 --noImplicitAny index.d.ts"},"types":"index.d.ts","version":"16.43.1"};
 
 /***/ }),
 
@@ -4025,7 +3956,7 @@ function coerce (version) {
 
 module.exports = authenticationRequestError;
 
-const { RequestError } = __webpack_require__(463);
+const { RequestError } = __webpack_require__(497);
 
 function authenticationRequestError(state, error, options) {
   if (!error.headers) throw error;
@@ -4409,7 +4340,7 @@ function hasLastPage (link) {
 
 module.exports = validate;
 
-const { RequestError } = __webpack_require__(463);
+const { RequestError } = __webpack_require__(497);
 const get = __webpack_require__(854);
 const set = __webpack_require__(883);
 
@@ -4565,7 +4496,7 @@ function validate(octokit, options) {
 
 module.exports = authenticationRequestError;
 
-const { RequestError } = __webpack_require__(463);
+const { RequestError } = __webpack_require__(497);
 
 function authenticationRequestError(state, error, options) {
   /* istanbul ignore next */
@@ -4703,7 +4634,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var isPlainObject = _interopDefault(__webpack_require__(626));
+var isPlainObject = _interopDefault(__webpack_require__(696));
 var universalUserAgent = __webpack_require__(562);
 
 function lowercaseKeys(object) {
@@ -7583,6 +7514,69 @@ module.exports = resolveCommand;
 
 /***/ }),
 
+/***/ 497:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var deprecation = __webpack_require__(692);
+var once = _interopDefault(__webpack_require__(969));
+
+const logOnce = once(deprecation => console.warn(deprecation));
+/**
+ * Error with extra properties to help with debugging
+ */
+
+class RequestError extends Error {
+  constructor(message, statusCode, options) {
+    super(message); // Maintains proper stack trace (only available on V8)
+
+    /* istanbul ignore next */
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
+
+    this.name = "HttpError";
+    this.status = statusCode;
+    Object.defineProperty(this, "code", {
+      get() {
+        logOnce(new deprecation.Deprecation("[@octokit/request-error] `error.code` is deprecated, use `error.status`."));
+        return statusCode;
+      }
+
+    });
+    this.headers = options.headers || {}; // redact request credentials without mutating original request options
+
+    const requestCopy = Object.assign({}, options.request);
+
+    if (options.request.headers.authorization) {
+      requestCopy.headers = Object.assign({}, options.request.headers, {
+        authorization: options.request.headers.authorization.replace(/ .*$/, " [REDACTED]")
+      });
+    }
+
+    requestCopy.url = requestCopy.url // client_id & client_secret can be passed as URL query parameters to increase rate limit
+    // see https://developer.github.com/v3/#increasing-the-unauthenticated-rate-limit-for-oauth-applications
+    .replace(/\bclient_secret=\w+/g, "client_secret=[REDACTED]") // OAuth tokens can be passed as URL query parameters, although it is not recommended
+    // see https://developer.github.com/v3/#oauth2-token-sent-in-a-header
+    .replace(/\baccess_token=\w+/g, "access_token=[REDACTED]");
+    this.request = requestCopy;
+  }
+
+}
+
+exports.RequestError = RequestError;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
 /***/ 510:
 /***/ (function(module) {
 
@@ -8234,62 +8228,6 @@ exports.HttpClient = HttpClient;
 
 /***/ }),
 
-/***/ 548:
-/***/ (function(module) {
-
-"use strict";
-
-
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObjectObject(o) {
-  return isObject(o) === true
-    && Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObjectObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (typeof ctor !== 'function') return false;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-module.exports = isPlainObject;
-
-
-/***/ }),
-
 /***/ 550:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -8587,62 +8525,6 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ 626:
-/***/ (function(module) {
-
-"use strict";
-
-
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObjectObject(o) {
-  return isObject(o) === true
-    && Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObjectObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (typeof ctor !== 'function') return false;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-module.exports = isPlainObject;
-
-
-/***/ }),
-
 /***/ 631:
 /***/ (function(module) {
 
@@ -8828,6 +8710,62 @@ exports.Deprecation = Deprecation;
 
 /***/ }),
 
+/***/ 696:
+/***/ (function(module) {
+
+"use strict";
+
+
+/*!
+ * isobject <https://github.com/jonschlinkert/isobject>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObject(val) {
+  return val != null && typeof val === 'object' && Array.isArray(val) === false;
+}
+
+/*!
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObjectObject(o) {
+  return isObject(o) === true
+    && Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isPlainObject(o) {
+  var ctor,prot;
+
+  if (isObjectObject(o) === false) return false;
+
+  // If has modified constructor
+  ctor = o.constructor;
+  if (typeof ctor !== 'function') return false;
+
+  // If has modified prototype
+  prot = ctor.prototype;
+  if (isObjectObject(prot) === false) return false;
+
+  // If constructor does not have an Object-specific method
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
+    return false;
+  }
+
+  // Most likely a plain Object
+  return true;
+}
+
+module.exports = isPlainObject;
+
+
+/***/ }),
+
 /***/ 697:
 /***/ (function(module) {
 
@@ -8934,9 +8872,9 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var endpoint = __webpack_require__(385);
 var universalUserAgent = __webpack_require__(211);
-var isPlainObject = _interopDefault(__webpack_require__(548));
+var isPlainObject = _interopDefault(__webpack_require__(696));
 var nodeFetch = _interopDefault(__webpack_require__(454));
-var requestError = __webpack_require__(257);
+var requestError = __webpack_require__(463);
 
 const VERSION = "5.3.4";
 
