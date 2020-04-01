@@ -14,11 +14,11 @@ jobs:
       with:
         node-version: 12.x
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Compile TypeScript
-        run: npm run build
+    - name: Compile TypeScript
+      run: npm run build
 
     - name: Pack source into a single file
       run: npm run pack
