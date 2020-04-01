@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import { debug, getInput, setFailed } from '@actions/core';
 import { context, GitHub } from '@actions/github';
 

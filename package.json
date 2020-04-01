@@ -1,5 +1,5 @@
 {
-  "name": "@neofinancial/action-prlint",
+  "name": "@neofinancial/pr-title-action",
   "version": "1.0.0",
   "private": true,
   "description": "Verify that your pull request titles start with a ticket ID",
@@ -9,21 +9,27 @@
     "dev": "tsc --watch",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint \"**/*.{ts,js}\"",
     "pack": "ncc build",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "all": "npm run build && npm run format && npm run lint && npm run pack && npm test"
+  },
+  "eslintConfig": {
+    "extends": "neo"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neofinancial/action-prlint.git"
+    "url": "git+https://github.com/neofinancial/pr-title-action.git"
   },
   "keywords": [
     "actions",
     "node",
     "setup"
   ],
-  "author": "Austin Paquette <austin.paquette@neofinancial.com>",
+  "author": "Neo Financial Engineering <engineering@neofinancial.com>",
+  "maintainers": [
+    "Austin Paquette <austin.paquette@neofinancial.com>"
+  ],
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/github": "^2.1.1"
