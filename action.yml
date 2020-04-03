@@ -1,50 +1,50 @@
-name: 'Pull Request Title Linter'
-description: ' Verify that your pull request titles start with a ticket ID'
-author: 'Austin Paquette'
+name: 'Pull Request Title Action'
+description: 'Verify that pull request titles start with a ticket ID'
+author: 'Neo Financial Engineering'
 
 inputs:
   ticketPrefix:
-    description: 'Title Regex'
+    description: 'The unique identifier for the ticket/issue'
     default: '#'
     required: true
 
   titleFormat:
-    description: 'Title Regex'
+    description: "The intended format the title should be set to if it doesn't match the regular expression. Available variables are `%prefix%`, `%id%`, and `%title%`"
     default: '%prefix%%id%: %title%'
     required: true
 
   titleRegex:
-    description: 'Title Regex'
+    description: 'The regular expression used to search the title for the intended format'
     default: '^(CH)(-?)(\d{3,})'
     required: true
 
   titleRegexFlags:
-    description: 'Title regular expression flags'
+    description: 'The regular expression flags applied to the title regular expression'
     default: 'gi'
     required: true
 
   bodyRegex:
-    description: 'Body Ticket Shorthand Regex'
+    description: 'The regular expression used to search the body for a shorthand reference'
     default: '(CH)(-?)(\d{3,})'
     required: true
 
   bodyRegexFlags:
-    description: 'Body regular expression flags'
+    description: 'The flags applied to the body regular expression when searching for a shorthand reference'
     default: 'gim'
     required: true
 
   bodyURLRegex:
-    description: 'Body URL Regex'
+    description: 'The regular expression used to search the body for a URL reference'
     default: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
     required: true
 
   bodyURLRegexFlags:
-    description: 'Body regular expression URL flags'
+    description: 'The flags applied to the body regular expression when searching for a URL reference'
     default: 'gim'
     required: true
 
   token:
-    description: 'GitHub Authentication Token'
+    description: 'GitHub authentication token'
     required: true
 
 runs:

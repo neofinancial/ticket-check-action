@@ -1,45 +1,50 @@
 {
-  "name": "@neofinancial/pr-title-action",
-  "version": "1.0.0",
-  "private": true,
+  "name": "pr-title-action",
   "description": "Verify that your pull request titles start with a ticket ID",
+  "version": "1.0.0",
+  "author": "Neo Financial Engineering <engineering@neofinancial.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neofinancial/pr-title-action"
+  },
   "main": "lib/main.js",
+  "private": true,
   "scripts": {
-    "build": "NODE_ENV=production ncc build src/main.ts -o build --minify",
+    "build": "NODE_ENV=production ncc build src/index.ts -o build --minify",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neofinancial/pr-title-action.git"
-  },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "github",
+    "linter",
+    "node"
   ],
-  "author": "Neo Financial Engineering <engineering@neofinancial.com>",
-  "dependencies": {
-    "@actions/core": "^1.2.0",
-    "@actions/github": "^2.1.1"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint"
+    ],
+    "*.{ts,js,json,yaml,yml,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "@types/node": "^13.9.5",
-    "@typescript-eslint/parser": "^2.8.0",
-    "@zeit/ncc": "^0.20.5",
-    "eslint": "^6.8.0",
-    "eslint-config-neo": "^0.5.2",
-    "eslint-plugin-github": "^2.0.0",
-    "eslint-plugin-jest": "^22.21.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "jest": "^24.9.0",
-    "jest-circus": "^24.9.0",
-    "js-yaml": "^3.13.1",
-    "prettier": "^1.19.1",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.6.4"
-  },
-  "license": "MIT"
+    "@actions/core": "1.2.3",
+    "@actions/github": "2.1.1",
+    "@types/node": "13.11.0",
+    "@zeit/ncc": "0.22.0",
+    "eslint": "6.8.0",
+    "eslint-config-neo": "0.5.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "1.19.1",
+    "typescript": "3.8.3"
+  }
 }

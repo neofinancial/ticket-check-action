@@ -3,7 +3,7 @@
 import { debug, getInput, setFailed } from '@actions/core';
 import { context, GitHub } from '@actions/github';
 
-// Helper function to retrieve digits from a string (be it a ticket string or a full URL)
+// Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
 const extractId = (value: string): string | null => {
   const result = value.match(/\d+/);
 
@@ -16,7 +16,7 @@ const extractId = (value: string): string | null => {
 
 async function run(): Promise<void> {
   try {
-    // Check for a Clubhouse Ticket Reference in the Title
+    // Check for a ticket reference in the title
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
     const titleRegexFlags = getInput('titleRegexFlags', {
@@ -25,53 +25,48 @@ async function run(): Promise<void> {
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
     const titleCheck = title.match(titleRegex);
 
-    // Return and approve if the title includes a Ticket ID
-    if (titleCheck !== null) {
-      debug('Title includes a ticket ID.');
-
-      return;
-    } else {
-      debug('Title does not include a ticket ID.');
-    }
-
     debug(title);
 
-    // Retrieve the Pull Request body contents and verify it's not empty
+    // Return and approve if the title includes a Ticket ID
+    if (titleCheck !== null) {
+      debug('Title includes a ticket ID');
+
+      return;
+    }
+
+    // Retrieve the pull request body and verify it's not empty
     const body = context?.payload?.pull_request?.body;
 
     if (body === undefined) {
-      debug('Body is undefined.');
+      debug('Body is undefined');
       setFailed('Could not retrieve the Pull Request body');
 
       return;
-    } else {
-      debug('Body contains content.');
     }
 
-    // Instantiate a GitHub Client Instance
+    debug(body);
+
+    // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
     const pullRequest = context.issue;
 
-    debug('Connected to GitHub Client.');
-
-    // Check for a Clubhouse Ticket Reference Number found in the body
+    // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
     const bodyRegexFlags = getInput('bodyRegexFlags', { required: true });
     const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
 
-    // Load in the requested title format and ticket prefix
+    // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
     const titleFormat = getInput('titleFormat', { required: true });
 
     if (bodyCheck !== null) {
-      debug('Body contains a reference to a ticket.');
-      debug(`Updating the title`);
+      debug('Body contains a reference to a ticket, updating title');
 
       const id = extractId(bodyCheck[0]);
 
       if (id === null) {
-        setFailed('Count not extract a Ticket ID from the body');
+        setFailed('Could not extract a ticket shorthand reference from the body');
 
         return;
       }
@@ -96,12 +91,9 @@ async function run(): Promise<void> {
       });
 
       return;
-    } else {
-      debug('Body does NOT contain a reference to a ticket.');
     }
 
-    // Last Ditch Effort
-    // Check for a Clubhouse Ticket Reference URL linked in the body
+    // Last ditch effort, check for a ticket reference URL in the body
     const bodyURLRegexBase = getInput('bodyURLRegex', { required: true });
     const bodyURLRegexFlags = getInput('bodyURLRegexFlags', {
       required: true
@@ -110,13 +102,12 @@ async function run(): Promise<void> {
     const bodyURLCheck = body.match(bodyURLRegex);
 
     if (bodyURLCheck !== null) {
-      debug('This Pull Request body contains a URL to a ticket.');
-      debug(`Updating the Pull Request title`);
+      debug('Body contains a ticket URL, updating title');
 
       const id = extractId(bodyURLCheck[0]);
 
       if (id === null) {
-        setFailed('Count not extract a Ticket ID from the body');
+        setFailed('Count not extract a ticket URL from the body');
 
         return;
       }
@@ -139,15 +130,11 @@ async function run(): Promise<void> {
           "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
         event: 'COMMENT'
       });
-    } else {
-      debug('Body does NOT contain a URL to a ticket.');
     }
 
-    debug(body);
-
     if (titleCheck === null && bodyCheck === null && bodyURLCheck === null) {
-      debug('Body does NOT contain a any reference to a ticket.');
-      setFailed('No ticket was referenced in this pull request.');
+      debug('Body does not contain a reference to a ticket');
+      setFailed('No ticket was referenced in this pull request');
 
       return;
     }
