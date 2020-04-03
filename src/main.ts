@@ -16,8 +16,6 @@ const extractId = (value: string): string | null => {
 
 async function run(): Promise<void> {
   try {
-    debug('Inside try block');
-
     // Check for a Clubhouse Ticket Reference in the Title
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
@@ -30,12 +28,10 @@ async function run(): Promise<void> {
     // Return and approve if the title includes a Ticket ID
     if (titleCheck !== null) {
       debug('Title includes a ticket ID.');
-      debug('Exiting...');
 
       return;
     } else {
       debug('Title does not include a ticket ID.');
-      debug('Continuing...');
     }
 
     debug(title);
@@ -46,12 +42,10 @@ async function run(): Promise<void> {
     if (body === undefined) {
       debug('Body is undefined.');
       setFailed('Could not retrieve the Pull Request body');
-      debug('Exiting...');
 
       return;
     } else {
       debug('Body contains content.');
-      debug('Continuing...');
     }
 
     // Instantiate a GitHub Client Instance
@@ -60,7 +54,6 @@ async function run(): Promise<void> {
     const pullRequest = context.issue;
 
     debug('Connected to GitHub Client.');
-    debug('Continuing...');
 
     // Check for a Clubhouse Ticket Reference Number found in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
@@ -105,7 +98,6 @@ async function run(): Promise<void> {
       return;
     } else {
       debug('Body does NOT contain a reference to a ticket.');
-      debug('Continuing...');
     }
 
     // Last Ditch Effort
@@ -149,7 +141,6 @@ async function run(): Promise<void> {
       });
     } else {
       debug('Body does NOT contain a URL to a ticket.');
-      debug('Continuing...');
     }
 
     debug(body);
@@ -157,7 +148,6 @@ async function run(): Promise<void> {
     if (titleCheck === null && bodyCheck === null && bodyURLCheck === null) {
       debug('Body does NOT contain a any reference to a ticket.');
       setFailed('No ticket was referenced in this pull request.');
-      debug('Exiting...');
 
       return;
     }

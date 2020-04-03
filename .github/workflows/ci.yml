@@ -27,9 +27,10 @@ jobs:
         run: yarn lint
       - name: Build
         run: yarn build
-      - name: Commit distribution build
+      - name: Commit build
         uses: endbug/add-and-commit@v4
         with:
-          add: "dist"
+          add: 'build'
+          message: 'Add build code'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

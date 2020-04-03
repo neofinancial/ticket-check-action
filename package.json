@@ -20,9 +20,6 @@
     "setup"
   ],
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
-  "maintainers": [
-    "Austin Paquette <austin.paquette@neofinancial.com>"
-  ],
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/github": "^2.1.1"
@@ -30,7 +27,6 @@
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.5",
-    "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.8.0",
     "@zeit/ncc": "^0.20.5",
     "eslint": "^6.8.0",

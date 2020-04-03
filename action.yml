@@ -19,7 +19,7 @@ inputs:
     required: true
 
   titleRegexFlags:
-    description: 'Title Regular Express Flags'
+    description: 'Title regular expression flags'
     default: 'gi'
     required: true
 
@@ -29,17 +29,17 @@ inputs:
     required: true
 
   bodyRegexFlags:
-    description: 'Title Regular Express Flags'
+    description: 'Body regular expression flags'
     default: 'gim'
     required: true
 
   bodyURLRegex:
-    description: 'Title Regex'
+    description: 'Body URL Regex'
     default: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
     required: true
 
   bodyURLRegexFlags:
-    description: 'Title Regular Express Flags'
+    description: 'Body regular expression URL flags'
     default: 'gim'
     required: true
 
