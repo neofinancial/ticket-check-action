@@ -1,4 +1,4 @@
-name: 'Pull Request Title Action'
+name: 'Pull Request Ticket Checking Action'
 description: 'Verify that pull request titles start with a ticket ID'
 author: 'Neo Financial Engineering'
 

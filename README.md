@@ -1,6 +1,6 @@
-# Pull Request Title Action
+# Pull Request Ticket Checking Action
 
-[![Build status](https://github.com/neofinancial/pr-title-action/workflows/CI/badge.svg)](https://github.com/neofinancial/pr-title-action/actions)
+[![Build status](https://github.com/neofinancial/ticket-check-action/workflows/CI/badge.svg)](https://github.com/neofinancial/ticket-check-action/actions)
 
 Verify that pull request titles start with a ticket ID
 
@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: PR Title Check
-        uses: neofinancial/pr-title-action@master
+        uses: neofinancial/ticket-check-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: '#'
@@ -66,7 +66,7 @@ jobs:
 
     steps:
       - name: PR Title Check
-        uses: neofinancial/pr-title-action@master
+        uses: neofinancial/ticket-check-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'PROJ-'
@@ -91,7 +91,7 @@ jobs:
 
     steps:
       - name: PR Title Check
-        uses: neofinancial/pr-title-action@master
+        uses: neofinancial/ticket-check-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'CH-'
