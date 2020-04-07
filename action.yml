@@ -1,0 +1,56 @@
+name: 'Pull Request Ticket Checking Action'
+description: 'Verify that pull request titles start with a ticket ID'
+author: 'Neo Financial Engineering'
+
+inputs:
+  ticketPrefix:
+    description: 'The unique identifier for the ticket/issue'
+    default: '#'
+    required: true
+
+  titleFormat:
+    description: "The intended format the title should be set to if it doesn't match the regular expression. Available variables are `%prefix%`, `%id%`, and `%title%`"
+    default: '%prefix%%id%: %title%'
+    required: true
+
+  titleRegex:
+    description: 'The regular expression used to search the title for the intended format'
+    default: '^(CH)(-?)(\d{3,})'
+    required: true
+
+  titleRegexFlags:
+    description: 'The regular expression flags applied to the title regular expression'
+    default: 'gi'
+    required: true
+
+  bodyRegex:
+    description: 'The regular expression used to search the body for a shorthand reference'
+    default: '(CH)(-?)(\d{3,})'
+    required: true
+
+  bodyRegexFlags:
+    description: 'The flags applied to the body regular expression when searching for a shorthand reference'
+    default: 'gim'
+    required: true
+
+  bodyURLRegex:
+    description: 'The regular expression used to search the body for a URL reference'
+    default: 'http(s?):\/\/(app.clubhouse.io)(\/neofinancial)(\/story)\/\d+'
+    required: true
+
+  bodyURLRegexFlags:
+    description: 'The flags applied to the body regular expression when searching for a URL reference'
+    default: 'gim'
+    required: true
+
+  token:
+    description: 'GitHub authentication token'
+    required: true
+
+runs:
+  using: 'node12'
+  main: 'build/index.js'
+
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'

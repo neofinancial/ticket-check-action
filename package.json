@@ -1,0 +1,50 @@
+{
+  "name": "ticket-check-action",
+  "description": "Verify that your pull request titles start with a ticket ID",
+  "version": "1.0.0",
+  "author": "Neo Financial Engineering <engineering@neofinancial.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neofinancial/ticket-check-action"
+  },
+  "main": "lib/main.js",
+  "private": true,
+  "scripts": {
+    "build": "NODE_ENV=production ncc build src/index.ts -o build --minify",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint \"**/*.{ts,js}\""
+  },
+  "keywords": [
+    "actions",
+    "github",
+    "linter",
+    "node"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js}": [
+      "eslint"
+    ],
+    "*.{ts,js,json,yaml,yml,md}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@actions/core": "1.2.3",
+    "@actions/github": "2.1.1",
+    "@types/node": "13.11.0",
+    "@zeit/ncc": "0.22.0",
+    "eslint": "6.8.0",
+    "eslint-config-neo": "0.5.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "1.19.1",
+    "typescript": "3.8.3"
+  }
+}
