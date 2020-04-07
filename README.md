@@ -1,4 +1,4 @@
-# Pull Request Ticket Checking Action
+# Pull Request Ticket Check Action
 
 [![Build status](https://github.com/neofinancial/ticket-check-action/workflows/CI/badge.svg)](https://github.com/neofinancial/ticket-check-action/actions)
 
