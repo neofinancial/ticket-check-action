@@ -28,7 +28,7 @@ Make sure you check for the following to swap out with your values:
 ### GitHub
 
 ```yml
-name: Pull Request Linting
+name: Pull Request Lint
 
 on:
   pull_request:
@@ -36,12 +36,12 @@ on:
 
 jobs:
   title:
-    name: 'Title'
+    name: ticket check
     runs-on: ubuntu-latest
 
     steps:
-      - name: PR Title Check
-        uses: neofinancial/ticket-check-action@master
+      - name: Check for ticket
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: '#'
@@ -53,7 +53,7 @@ jobs:
 ### JIRA
 
 ```yml
-name: Pull Request Linting
+name: Pull Request Lint
 
 on:
   pull_request:
@@ -61,12 +61,12 @@ on:
 
 jobs:
   title:
-    name: 'Title'
+    name: ticket check
     runs-on: ubuntu-latest
 
     steps:
-      - name: PR Title Check
-        uses: neofinancial/ticket-check-action@master
+      - name: Check for ticket
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'PROJ-'
@@ -78,7 +78,7 @@ jobs:
 ### Clubhouse
 
 ```yml
-name: Pull Request Linting
+name: Pull Request Lint
 
 on:
   pull_request:
@@ -86,12 +86,12 @@ on:
 
 jobs:
   title:
-    name: 'Title'
+    name: ticket check
     runs-on: ubuntu-latest
 
     steps:
-      - name: PR Title Check
-        uses: neofinancial/ticket-check-action@master
+      - name: Check for ticket
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'CH-'
