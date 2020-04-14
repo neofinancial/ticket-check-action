@@ -115,3 +115,10 @@ jobs:
 | bodyRegexFlags    |          | The flags applied to the body regular expression when searching for a shorthand reference                                                            | gim                   |
 | bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
+
+
+## Caveat
+
+There is bug currently in the way GitHub triggers their workflows. If the pull request fails, a new commit is required (even as simple as an empty one `git commit -m "trigger workflows" --allow-empty` ) to flush the workflow statuses and re-run a new sequence of checks.
+
+For updates see the community forum thread here: https://github.community/t5/GitHub-Actions/Editing-a-PR-title-or-first-comment-causing-a-pile-up-of-runs/td-p/53932
