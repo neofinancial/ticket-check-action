@@ -119,6 +119,6 @@ jobs:
 
 ## Caveat
 
-There is bug currently in the way GitHub triggers their workflows. If the pull request fails, a new commit is required (even as simple as an empty one `git commit -m "trigger workflows" --allow-empty` ) to flush the workflow statuses and re-run a new sequence of checks.
+There is limitation currently in the way GitHub triggers their checks. If the pull request fails, a new commit is required (even as simple as an empty one `git commit -m "retrigger checks" --allow-empty` ) to flush the old statuses and re-run a new sequence of checks.
 
 For updates see the community forum thread here: https://github.community/t5/GitHub-Actions/Editing-a-PR-title-or-first-comment-causing-a-pile-up-of-runs/td-p/53932
