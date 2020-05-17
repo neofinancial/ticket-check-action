@@ -49,8 +49,12 @@ async function run(): Promise<void> {
     // Check for a ticket reference in the branch
     const currentBranch = getBranchName(context.ref);
     const branchCheck = extractId(currentBranch);
+    debug(JSON.stringify(context.payload, undefined, 2));
+    debug(currentBranch);
+
     if (branchCheck !== null) {
       debug('Branch name contains a reference to a ticket, updating title');
+      debug(branchCheck);
 
       client.pulls.update({
         owner: pullRequest.owner,
