@@ -55,7 +55,7 @@ async function run(): Promise<void> {
       client.pulls.update({
         owner: pullRequest.owner,
         repo: pullRequest.repo,
-        number: pullRequest.number,
+        pull_number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', branchCheck)
@@ -103,7 +103,7 @@ async function run(): Promise<void> {
       client.pulls.update({
         owner: pullRequest.owner,
         repo: pullRequest.repo,
-        number: pullRequest.number,
+        pull_number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -144,7 +144,7 @@ async function run(): Promise<void> {
       client.pulls.update({
         owner: pullRequest.owner,
         repo: pullRequest.repo,
-        number: pullRequest.number,
+        pull_number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
