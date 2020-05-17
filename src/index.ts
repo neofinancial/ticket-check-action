@@ -48,8 +48,8 @@ async function run(): Promise<void> {
 
     // Check for a ticket reference in the branch
     const currentBranch = getBranchName(context.ref);
-    const id = extractId(currentBranch);
-    if (id !== null) {
+    const branchCheck = extractId(currentBranch);
+    if (branchCheck !== null) {
       debug('Branch name contains a reference to a ticket, updating title');
 
       client.pulls.update({
@@ -58,7 +58,7 @@ async function run(): Promise<void> {
         number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
+          .replace('%id%', branchCheck)
           .replace('%title%', title)
       });
 
@@ -136,7 +136,7 @@ async function run(): Promise<void> {
       const id = extractId(bodyURLCheck[0]);
 
       if (id === null) {
-        setFailed('Count not extract a ticket URL from the body');
+        setFailed('Could not extract a ticket URL from the body');
 
         return;
       }
@@ -161,8 +161,8 @@ async function run(): Promise<void> {
       });
     }
 
-    if (titleCheck === null && bodyCheck === null && bodyURLCheck === null) {
-      debug('Body does not contain a reference to a ticket');
+    if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
+      debug('Title, branch, and body do not contain a reference to a ticket');
       setFailed('No ticket was referenced in this pull request');
 
       return;
