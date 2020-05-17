@@ -70,6 +70,8 @@ async function run(): Promise<void> {
           "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
         event: 'COMMENT'
       });
+
+      return;
     }
 
     // Retrieve the pull request body and verify it's not empty
