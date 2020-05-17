@@ -46,6 +46,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: '#'
           titleRegex: '^#(\d+)'
+          branchRegex: '^(\d+)'
           bodyRegex: '#(\d+)'
           bodyURLRegex: 'http(s?):\/\/(github.com)(\/:owner)(\/:repo)(\/issues)\/\d+'
 ```
@@ -71,6 +72,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'PROJ-'
           titleRegex: '^PROJ-(\d+)'
+          branchRegex: '^PROJ-(\d+)'
           bodyRegex: 'PROJ-(\d+)'
           bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)\d+'
 ```
