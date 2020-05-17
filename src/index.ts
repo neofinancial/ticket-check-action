@@ -14,6 +14,9 @@ const extractId = (value: string): string | null => {
   return null;
 };
 
+// Helper function to simplify the branch names
+const getBranchName = (reference: string): string => reference.replace('refs/heads/', '');
+
 async function run(): Promise<void> {
   try {
     // Check for a ticket reference in the title
@@ -34,6 +37,41 @@ async function run(): Promise<void> {
       return;
     }
 
+    // Instantiate a GitHub Client instance
+    const token = getInput('token', { required: true });
+    const client = new GitHub(token);
+    const pullRequest = context.issue;
+
+    // get the title format and ticket prefix
+    const ticketPrefix = getInput('ticketPrefix', { required: true });
+    const titleFormat = getInput('titleFormat', { required: true });
+
+    // Check for a ticket reference in the branch
+    const currentBranch = getBranchName(context.ref);
+    const id = extractId(currentBranch);
+    if (id !== null) {
+      debug('Branch name contains a reference to a ticket, updating title');
+
+      client.pulls.update({
+        owner: pullRequest.owner,
+        repo: pullRequest.repo,
+        number: pullRequest.number,
+        title: titleFormat
+          .replace('%prefix%', ticketPrefix)
+          .replace('%id%', id)
+          .replace('%title%', title)
+      });
+
+      client.pulls.createReview({
+        owner: pullRequest.owner,
+        repo: pullRequest.repo,
+        pull_number: pullRequest.number,
+        body:
+          "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+        event: 'COMMENT'
+      });
+    }
+
     // Retrieve the pull request body and verify it's not empty
     const body = context?.payload?.pull_request?.body;
 
@@ -46,19 +84,10 @@ async function run(): Promise<void> {
 
     debug(body);
 
-    // Instantiate a GitHub Client instance
-    const token = getInput('token', { required: true });
-    const client = new GitHub(token);
-    const pullRequest = context.issue;
-
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
     const bodyRegexFlags = getInput('bodyRegexFlags', { required: true });
     const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
-
-    // get the title format and ticket prefix
-    const ticketPrefix = getInput('ticketPrefix', { required: true });
-    const titleFormat = getInput('titleFormat', { required: true });
 
     if (bodyCheck !== null) {
       debug('Body contains a reference to a ticket, updating title');
