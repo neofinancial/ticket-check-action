@@ -44,7 +44,7 @@ async function run(): Promise<void> {
     const titleFormat = getInput('titleFormat', { required: true });
 
     // Check for a ticket reference in the branch
-    const branchCheck = extractId(context.payload.head.ref);
+    const branchCheck = extractId(context.payload.pull_request?.head.ref);
 
     if (branchCheck !== null) {
       debug('Branch name contains a reference to a ticket, updating title');
