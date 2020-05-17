@@ -23,6 +23,16 @@ inputs:
     default: 'gi'
     required: true
 
+  branchRegex:
+    description: 'The regular expression used to search the branch for the intended format'
+    default: '^(CH)(-?)(\d{3,})'
+    required: true
+
+  branchRegexFlags:
+    description: 'The regular expression flags applied to the branch regular expression'
+    default: 'gi'
+    required: true
+
   bodyRegex:
     description: 'The regular expression used to search the body for a shorthand reference'
     default: '(CH)(-?)(\d{3,})'
