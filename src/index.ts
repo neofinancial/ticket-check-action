@@ -14,9 +14,6 @@ const extractId = (value: string): string | null => {
   return null;
 };
 
-// Helper function to simplify the branch names
-const getBranchName = (reference: string): string => reference.replace('refs/heads/', '');
-
 async function run(): Promise<void> {
   try {
     // Check for a ticket reference in the title
@@ -47,10 +44,7 @@ async function run(): Promise<void> {
     const titleFormat = getInput('titleFormat', { required: true });
 
     // Check for a ticket reference in the branch
-    const currentBranch = getBranchName(context.ref);
-    const branchCheck = extractId(currentBranch);
-    debug(JSON.stringify(context.payload, undefined, 2));
-    debug(currentBranch);
+    const branchCheck = extractId(context.payload.head.ref);
 
     if (branchCheck !== null) {
       debug('Branch name contains a reference to a ticket, updating title');
