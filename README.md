@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.0.0
+        uses: neofinancial/ticket-check-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: '#'
@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.0.0
+        uses: neofinancial/ticket-check-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'PROJ-'
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.0.0
+        uses: neofinancial/ticket-check-action@v1.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'CH-'
