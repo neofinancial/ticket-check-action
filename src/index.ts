@@ -34,6 +34,57 @@ async function run(): Promise<void> {
       return;
     }
 
+    // Instantiate a GitHub Client instance
+    const token = getInput('token', { required: true });
+    const client = new GitHub(token);
+    const pullRequest = context.issue;
+
+    // get the title format and ticket prefix
+    const ticketPrefix = getInput('ticketPrefix', { required: true });
+    const titleFormat = getInput('titleFormat', { required: true });
+
+    // Check for a ticket reference in the branch
+    const branch: string = context.payload.pull_request?.head.ref;
+    const branchRegexBase = getInput('branchRegex', { required: true });
+    const branchRegexFlags = getInput('branchRegexFlags', {
+      required: true
+    });
+    const branchRegex = new RegExp(branchRegexBase, branchRegexFlags);
+    const branchCheck = branch.match(branchRegex);
+
+    if (branchCheck !== null) {
+      debug('Branch name contains a reference to a ticket, updating title');
+
+      const id = extractId(branch);
+
+      if (id === null) {
+        setFailed('Could not extract a ticket ID reference from the branch');
+
+        return;
+      }
+
+      client.pulls.update({
+        owner: pullRequest.owner,
+        repo: pullRequest.repo,
+        pull_number: pullRequest.number,
+        title: titleFormat
+          .replace('%prefix%', ticketPrefix)
+          .replace('%id%', id)
+          .replace('%title%', title)
+      });
+
+      client.pulls.createReview({
+        owner: pullRequest.owner,
+        repo: pullRequest.repo,
+        pull_number: pullRequest.number,
+        body:
+          "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+        event: 'COMMENT'
+      });
+
+      return;
+    }
+
     // Retrieve the pull request body and verify it's not empty
     const body = context?.payload?.pull_request?.body;
 
@@ -46,19 +97,10 @@ async function run(): Promise<void> {
 
     debug(body);
 
-    // Instantiate a GitHub Client instance
-    const token = getInput('token', { required: true });
-    const client = new GitHub(token);
-    const pullRequest = context.issue;
-
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
     const bodyRegexFlags = getInput('bodyRegexFlags', { required: true });
     const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
-
-    // get the title format and ticket prefix
-    const ticketPrefix = getInput('ticketPrefix', { required: true });
-    const titleFormat = getInput('titleFormat', { required: true });
 
     if (bodyCheck !== null) {
       debug('Body contains a reference to a ticket, updating title');
@@ -74,7 +116,7 @@ async function run(): Promise<void> {
       client.pulls.update({
         owner: pullRequest.owner,
         repo: pullRequest.repo,
-        number: pullRequest.number,
+        pull_number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -107,7 +149,7 @@ async function run(): Promise<void> {
       const id = extractId(bodyURLCheck[0]);
 
       if (id === null) {
-        setFailed('Count not extract a ticket URL from the body');
+        setFailed('Could not extract a ticket URL from the body');
 
         return;
       }
@@ -115,7 +157,7 @@ async function run(): Promise<void> {
       client.pulls.update({
         owner: pullRequest.owner,
         repo: pullRequest.repo,
-        number: pullRequest.number,
+        pull_number: pullRequest.number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -132,8 +174,8 @@ async function run(): Promise<void> {
       });
     }
 
-    if (titleCheck === null && bodyCheck === null && bodyURLCheck === null) {
-      debug('Body does not contain a reference to a ticket');
+    if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
+      debug('Title, branch, and body do not contain a reference to a ticket');
       setFailed('No ticket was referenced in this pull request');
 
       return;
