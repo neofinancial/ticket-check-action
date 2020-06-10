@@ -36,8 +36,8 @@
     ]
   },
   "devDependencies": {
-    "@actions/core": "1.2.3",
-    "@actions/github": "2.1.1",
+    "@actions/core": "^1.2.3",
+    "@actions/github": "^2.1.1",
     "@types/node": "13.11.0",
     "@zeit/ncc": "0.22.0",
     "eslint": "6.8.0",
