@@ -41,7 +41,9 @@ async function run(): Promise<void> {
     const { sender } = context.payload;
 
     // Exempt Users
-    const exemptUsers = getInput('exemptUsers', { required: true }).split(',');
+    const exemptUsers = getInput('exemptUsers', { required: true })
+      .split(',')
+      .map(user => user.trim());
 
     if (sender && exemptUsers.includes(sender.login)) {
       debug('User is listed as exempt');
