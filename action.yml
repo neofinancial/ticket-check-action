@@ -53,6 +53,11 @@ inputs:
     default: 'gim'
     required: true
 
+  exemptUsers:
+    description: 'User(s) who will be exempt from the ticket check rules. Particularly useful for automated/bot PRs'
+    default: ''
+    required: false
+
   token:
     description: 'GitHub authentication token'
     required: true

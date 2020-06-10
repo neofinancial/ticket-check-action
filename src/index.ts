@@ -39,6 +39,8 @@ async function run(): Promise<void> {
     const client = new GitHub(token);
     const pullRequest = context.issue;
 
+    debug(pullRequest.owner);
+
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
     const titleFormat = getInput('titleFormat', { required: true });
