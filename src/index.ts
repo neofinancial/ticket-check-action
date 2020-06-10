@@ -39,7 +39,10 @@ async function run(): Promise<void> {
     const client = new GitHub(token);
     const pullRequest = context.issue;
 
-    debug(pullRequest.owner);
+    // Exempt Users
+    const exemptUsers = getInput('exemptUsers', { required: true });
+    debug(exemptUsers);
+    debug(context.actor);
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
