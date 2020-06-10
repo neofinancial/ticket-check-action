@@ -30,13 +30,12 @@ async function run(): Promise<void> {
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
-    const titleFormat = getInput('titleFormat', { required: true });
 
     client.pulls.update({
       owner: pullRequest.owner,
       repo: pullRequest.repo,
       pull_number: pullRequest.number,
-      title: titleFormat.replace('%prefix%', ticketPrefix).replace('%title%', title)
+      title: `${ticketPrefix} ${title}`
     });
 
     client.pulls.createReview({
