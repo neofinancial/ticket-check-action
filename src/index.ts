@@ -41,9 +41,14 @@ async function run(): Promise<void> {
     const { sender } = context.payload;
 
     // Exempt Users
-    const exemptUsers = getInput('exemptUsers', { required: true });
-    debug(exemptUsers);
-    debug(sender?.login);
+    const exemptUsers = getInput('exemptUsers', { required: true }).split(',');
+
+    if (sender && exemptUsers.includes(sender.login)) {
+      debug('Username is listing as exempt');
+      debug(exemptUsers.join(', '));
+      debug(sender?.login);
+      return;
+    }
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
