@@ -44,7 +44,7 @@ async function run(): Promise<void> {
     const exemptUsers = getInput('exemptUsers', { required: true }).split(',');
 
     if (sender && exemptUsers.includes(sender.login)) {
-      debug('Username is listed as exempt');
+      debug('User is listed as exempt');
       debug(`Exempt Users: ${exemptUsers.join(', ')}`);
       debug(`Pull Request Owner: ${sender.login}`);
       return;
