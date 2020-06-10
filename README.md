@@ -120,7 +120,7 @@ jobs:
 | bodyRegexFlags    |          | The flags applied to the body regular expression when searching for a shorthand reference                                                            | gim                   |
 | bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
-| exemptUsers       |          | Usernames that are exempt from all checks and will pass. Most useful for bot/automated PRs                                                           |                       |
+| exemptUsers       |          | Usernames that are exempt from all checks and will pass. Most useful for bot/automated PRs (example "octocat,dependabot")                            |                       |
 
 ## Caveat
 
