@@ -42,7 +42,7 @@ async function run(): Promise<void> {
     // Exempt Users
     const exemptUsers = getInput('exemptUsers', { required: true });
     debug(exemptUsers);
-    console.log(JSON.stringify(context.payload));
+    debug(context?.payload?.sender?.login);
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
