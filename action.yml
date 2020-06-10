@@ -10,7 +10,7 @@ inputs:
 
   titleFormat:
     description: "The intended format the title should be set to if it doesn't match the regular expression. Available variables are `%prefix%`, `%id%`, and `%title%`"
-    default: '%prefix%%: %title%'
+    default: '%prefix%: %title%'
     required: true
 
   titleRegex:
