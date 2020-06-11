@@ -30,6 +30,7 @@ async function run(): Promise<void> {
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
+    const comment = getInput('comment', { required: true });
 
     client.pulls.update({
       owner: pullRequest.owner,
@@ -42,8 +43,7 @@ async function run(): Promise<void> {
       owner: pullRequest.owner,
       repo: pullRequest.repo,
       pull_number: pullRequest.number,
-      body:
-        "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+      body: `${comment}`,
       event: 'COMMENT'
     });
 
