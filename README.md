@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.1.0
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: '#'
@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.1.0
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'PROJ-'
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1.1.0
+        uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketPrefix: 'CH-'
@@ -120,6 +120,7 @@ jobs:
 | bodyRegexFlags    |          | The flags applied to the body regular expression when searching for a shorthand reference                                                            | gim                   |
 | bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
+| exemptUsers       |          | Comma seperated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                       |
 
 ## Caveat
 

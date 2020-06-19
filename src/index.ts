@@ -38,6 +38,19 @@ async function run(): Promise<void> {
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
     const pullRequest = context.issue;
+    const { sender } = context.payload;
+
+    // Exempt Users
+    const exemptUsers = getInput('exemptUsers', { required: true })
+      .split(',')
+      .map(user => user.trim());
+
+    if (sender && exemptUsers.includes(sender.login)) {
+      debug('User is listed as exempt');
+      debug(`Exempt Users: ${exemptUsers.join(', ')}`);
+      debug(`Pull Request Owner: ${sender.login}`);
+      return;
+    }
 
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix', { required: true });
