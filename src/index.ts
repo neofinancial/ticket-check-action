@@ -49,6 +49,7 @@ async function run(): Promise<void> {
       debug('User is listed as exempt');
       debug(`Exempt Users: ${exemptUsers.join(', ')}`);
       debug(`Pull Request Owner: ${sender.login}`);
+
       return;
     }
 
