@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 (June 20, 2020)
+
+Fix a configuration bug marking the new `exemptUsers` field as true creating a breaking change. This is now an optional field as intended.
+
 ## 1.2.0 (June 17, 2020)
 
 Provide a configuration option to exempt users from the action rules. Most useful for automated and bot PRs.
