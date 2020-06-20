@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     const { sender } = context.payload;
 
     // Exempt Users
-    const exemptUsers = getInput('exemptUsers', { required: true })
+    const exemptUsers = getInput('exemptUsers', { required: false })
       .split(',')
       .map(user => user.trim());
 
