@@ -32,14 +32,14 @@ async function run(): Promise<void> {
     const ticketPrefix = getInput('ticketPrefix', { required: true });
     const comment = getInput('comment', { required: true });
 
-    client.pulls.update({
+    await client.pulls.update({
       owner: pullRequest.owner,
       repo: pullRequest.repo,
       pull_number: pullRequest.number,
       title: `${ticketPrefix} ${title}`
     });
 
-    client.pulls.createReview({
+    await client.pulls.createReview({
       owner: pullRequest.owner,
       repo: pullRequest.repo,
       pull_number: pullRequest.number,
