@@ -121,6 +121,7 @@ jobs:
 | bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
 | exemptUsers       |          | Comma seperated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                       |
+| quiet             |          | If `'true'`, don't comment when a PR title is updated                                                                                                | false                 |
 
 ## Caveat
 

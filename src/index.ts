@@ -87,14 +87,18 @@ async function run(): Promise<void> {
           .replace('%title%', title)
       });
 
-      client.pulls.createReview({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
-        body:
-          "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-        event: 'COMMENT'
-      });
+      const quiet = getInput('quiet', { required: false }) === 'true';
+
+      if (!quiet) {
+        client.pulls.createReview({
+          owner: pullRequest.owner,
+          repo: pullRequest.repo,
+          pull_number: pullRequest.number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
+        });
+      }
 
       return;
     }
