@@ -40,6 +40,8 @@ async function run(): Promise<void> {
     const pullRequest = context.issue;
     const { sender } = context.payload;
 
+    const quiet = getInput('quiet', { required: false }) === 'true';
+
     // Exempt Users
     const exemptUsers = getInput('exemptUsers', { required: false })
       .split(',')
@@ -86,8 +88,6 @@ async function run(): Promise<void> {
           .replace('%id%', id)
           .replace('%title%', title)
       });
-
-      const quiet = getInput('quiet', { required: false }) === 'true';
 
       if (!quiet) {
         client.pulls.createReview({
@@ -141,14 +141,16 @@ async function run(): Promise<void> {
           .replace('%title%', title)
       });
 
-      client.pulls.createReview({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
-        body:
-          "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-        event: 'COMMENT'
-      });
+      if (!quiet) {
+        client.pulls.createReview({
+          owner: pullRequest.owner,
+          repo: pullRequest.repo,
+          pull_number: pullRequest.number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
+        });
+      }
 
       return;
     }
@@ -182,14 +184,16 @@ async function run(): Promise<void> {
           .replace('%title%', title)
       });
 
-      client.pulls.createReview({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
-        body:
-          "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-        event: 'COMMENT'
-      });
+      if (!quiet) {
+        client.pulls.createReview({
+          owner: pullRequest.owner,
+          repo: pullRequest.repo,
+          pull_number: pullRequest.number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
+        });
+      }
     }
 
     if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
