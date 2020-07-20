@@ -38,14 +38,23 @@ async function run(): Promise<void> {
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
     const pullRequest = context.issue;
-    const sender = context.payload.pull_request?.user.login;
+    const { login, type } = context.payload.pull_request?.user.login;
+    const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
+
+    debug('[SENDER]');
+    debug(sender);
 
     const quiet = getInput('quiet', { required: false }) === 'true';
+
+    debug('[QUIET MODE]');
+    debug(quiet.toString());
 
     // Exempt Users
     const exemptUsers = getInput('exemptUsers', { required: false })
       .split(',')
-      .map(user => user.trim().replace('[bot]', ''));
+      .map(user => user.trim());
+
+    debug(exemptUsers.join(','));
 
     if (sender && exemptUsers.includes(sender)) {
       debug('User is listed as exempt');
