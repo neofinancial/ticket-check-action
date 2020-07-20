@@ -15,10 +15,10 @@ const extractId = (value: string): string | null => {
 };
 
 const debug = (label: string, message: string): void => {
-  log('----------');
+  log('');
   log(`[${label.toUpperCase()}]`);
   log(message);
-  log('----------');
+  log('');
 };
 
 async function run(): Promise<void> {
@@ -48,16 +48,9 @@ async function run(): Promise<void> {
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
     const { owner, repo, number } = context.issue;
-    const { data } = await client.pulls.get({
-      owner,
-      repo,
-      pull_number: number
-    });
-    const { login, type } = context.payload.pull_request?.user;
-    const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
-
-    debug('user', JSON.stringify({ login, type }));
-    debug('data', JSON.stringify(data));
+    const login = context.payload.pull_request?.user.login as string;
+    const senderType = context.payload.pull_request?.user.type as string;
+    const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
@@ -67,7 +60,8 @@ async function run(): Promise<void> {
       .map(user => user.trim());
 
     // Debugging Entries
-    debug('pull request owner 2', sender);
+    debug('sender', sender);
+    debug('sender type', senderType);
     debug('quiet mode', quiet.toString());
     debug('exempt users', exemptUsers.join(','));
 
