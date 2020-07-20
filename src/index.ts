@@ -40,7 +40,7 @@ async function run(): Promise<void> {
     const pullRequest = context.issue;
     const { sender } = context.payload;
 
-    debug(JSON.stringify(context));
+    debug(JSON.stringify(context.payload.pull_request?.user.login));
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
