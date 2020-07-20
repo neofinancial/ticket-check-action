@@ -47,18 +47,16 @@ async function run(): Promise<void> {
     // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
-    const pullRequest = context.issue;
+    const { owner, repo, number } = context.issue;
+    const { data } = await client.pulls.get({
+      owner,
+      repo,
+      pull_number: number
+    });
     const { login, type } = context.payload.pull_request?.user.login;
     const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
 
-    const { data } = await client.pulls.get({
-      owner: pullRequest.owner,
-      repo: pullRequest.repo,
-      pull_number: pullRequest.number
-    });
     debug('data', JSON.stringify(data));
-
-    debug('Pull Request Owner 1', pullRequest.owner);
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
@@ -103,9 +101,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -114,9 +112,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -155,9 +153,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -166,9 +164,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -198,9 +196,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -209,9 +207,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
