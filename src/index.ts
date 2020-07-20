@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import { debug, getInput, setFailed } from '@actions/core';
+import { debug as log, getInput, setFailed } from '@actions/core';
 import { context, GitHub } from '@actions/github';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
@@ -14,8 +14,18 @@ const extractId = (value: string): string | null => {
   return null;
 };
 
+const debug = (label: string, message: string): void => {
+  log('----------');
+  log(`[${label.toUpperCase()}]`);
+  log(message);
+  log('----------');
+};
+
 async function run(): Promise<void> {
   try {
+    // Provide complete context object right away if debugging
+    log(JSON.stringify(context));
+
     // Check for a ticket reference in the title
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
@@ -25,11 +35,11 @@ async function run(): Promise<void> {
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
     const titleCheck = title.match(titleRegex);
 
-    debug(title);
+    debug('title', title);
 
     // Return and approve if the title includes a Ticket ID
     if (titleCheck !== null) {
-      debug('Title includes a ticket ID');
+      debug('success', 'Title includes a ticket ID');
 
       return;
     }
@@ -41,25 +51,20 @@ async function run(): Promise<void> {
     const { login, type } = context.payload.pull_request?.user.login;
     const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
 
-    debug('[SENDER]');
-    debug(sender);
-
     const quiet = getInput('quiet', { required: false }) === 'true';
-
-    debug('[QUIET MODE]');
-    debug(quiet.toString());
 
     // Exempt Users
     const exemptUsers = getInput('exemptUsers', { required: false })
       .split(',')
       .map(user => user.trim());
 
-    debug(exemptUsers.join(','));
+    // Debugging Entries
+    debug('pull request owner', sender);
+    debug('quiet mode', quiet.toString());
+    debug('exempt users', exemptUsers.join(','));
 
     if (sender && exemptUsers.includes(sender)) {
-      debug('User is listed as exempt');
-      debug(`Exempt Users: ${exemptUsers.join(', ')}`);
-      debug(`Pull Request Owner: ${sender}`);
+      debug('success', 'User is listed as exempt');
 
       return;
     }
@@ -78,7 +83,7 @@ async function run(): Promise<void> {
     const branchCheck = branch.match(branchRegex);
 
     if (branchCheck !== null) {
-      debug('Branch name contains a reference to a ticket, updating title');
+      debug('success', 'Branch name contains a reference to a ticket, updating title');
 
       const id = extractId(branch);
 
@@ -116,13 +121,13 @@ async function run(): Promise<void> {
     const body = context?.payload?.pull_request?.body;
 
     if (body === undefined) {
-      debug('Body is undefined');
+      debug('failure', 'Body is undefined');
       setFailed('Could not retrieve the Pull Request body');
 
       return;
     }
 
-    debug(body);
+    debug('body contents', body);
 
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
@@ -130,7 +135,7 @@ async function run(): Promise<void> {
     const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
 
     if (bodyCheck !== null) {
-      debug('Body contains a reference to a ticket, updating title');
+      debug('success', 'Body contains a reference to a ticket, updating title');
 
       const id = extractId(bodyCheck[0]);
 
@@ -173,7 +178,7 @@ async function run(): Promise<void> {
     const bodyURLCheck = body.match(bodyURLRegex);
 
     if (bodyURLCheck !== null) {
-      debug('Body contains a ticket URL, updating title');
+      debug('success', 'Body contains a ticket URL, updating title');
 
       const id = extractId(bodyURLCheck[0]);
 
@@ -206,7 +211,7 @@ async function run(): Promise<void> {
     }
 
     if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
-      debug('Title, branch, and body do not contain a reference to a ticket');
+      debug('failure', 'Title, branch, and body do not contain a reference to a ticket');
       setFailed('No ticket was referenced in this pull request');
 
       return;
