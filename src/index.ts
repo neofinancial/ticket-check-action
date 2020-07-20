@@ -24,7 +24,7 @@ const debug = (label: string, message: string): void => {
 async function run(): Promise<void> {
   try {
     // Provide complete context object right away if debugging
-    log(JSON.stringify(context));
+    debug('context', JSON.stringify(context));
 
     // Check for a ticket reference in the title
     const title: string = context?.payload?.pull_request?.title;
@@ -51,6 +51,8 @@ async function run(): Promise<void> {
     const { login, type } = context.payload.pull_request?.user.login;
     const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
 
+    debug('Pull Request Owner 1', pullRequest.owner);
+
     const quiet = getInput('quiet', { required: false }) === 'true';
 
     // Exempt Users
@@ -59,7 +61,7 @@ async function run(): Promise<void> {
       .map(user => user.trim());
 
     // Debugging Entries
-    debug('pull request owner', sender);
+    debug('pull request owner 2', sender);
     debug('quiet mode', quiet.toString());
     debug('exempt users', exemptUsers.join(','));
 
