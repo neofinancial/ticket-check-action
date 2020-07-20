@@ -51,6 +51,13 @@ async function run(): Promise<void> {
     const { login, type } = context.payload.pull_request?.user.login;
     const sender = type === 'Bot' ? login.replace('[bot]', '') : login;
 
+    const { data } = await client.pulls.get({
+      owner: pullRequest.owner,
+      repo: pullRequest.repo,
+      pull_number: pullRequest.number
+    });
+    debug('data', JSON.stringify(data));
+
     debug('Pull Request Owner 1', pullRequest.owner);
 
     const quiet = getInput('quiet', { required: false }) === 'true';
