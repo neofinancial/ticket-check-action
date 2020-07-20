@@ -40,6 +40,8 @@ async function run(): Promise<void> {
     const pullRequest = context.issue;
     const { sender } = context.payload;
 
+    debug(JSON.stringify(context));
+
     const quiet = getInput('quiet', { required: false }) === 'true';
 
     // Exempt Users
