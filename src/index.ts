@@ -47,10 +47,10 @@ async function run(): Promise<void> {
       .split(',')
       .map(user => user.trim().replace('[bot]', ''));
 
-    if (sender && exemptUsers.includes(sender.login)) {
+    if (sender && exemptUsers.includes(sender)) {
       debug('User is listed as exempt');
       debug(`Exempt Users: ${exemptUsers.join(', ')}`);
-      debug(`Pull Request Owner: ${sender.login}`);
+      debug(`Pull Request Owner: ${sender}`);
 
       return;
     }
