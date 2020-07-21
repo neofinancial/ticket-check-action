@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 (July 20, 2020)
+
+Fix bug with `exemptUsers` field.
+
 ## 1.3.0 (June 28, 2020)
 
 Allow silencing of the PR title update comment.

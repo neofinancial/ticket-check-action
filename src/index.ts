@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import { debug, getInput, setFailed } from '@actions/core';
+import { debug as log, getInput, setFailed } from '@actions/core';
 import { context, GitHub } from '@actions/github';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
@@ -14,8 +14,18 @@ const extractId = (value: string): string | null => {
   return null;
 };
 
+const debug = (label: string, message: string): void => {
+  log('');
+  log(`[${label.toUpperCase()}]`);
+  log(message);
+  log('');
+};
+
 async function run(): Promise<void> {
   try {
+    // Provide complete context object right away if debugging
+    debug('context', JSON.stringify(context));
+
     // Check for a ticket reference in the title
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
@@ -25,11 +35,11 @@ async function run(): Promise<void> {
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
     const titleCheck = title.match(titleRegex);
 
-    debug(title);
+    debug('title', title);
 
     // Return and approve if the title includes a Ticket ID
     if (titleCheck !== null) {
-      debug('Title includes a ticket ID');
+      debug('success', 'Title includes a ticket ID');
 
       return;
     }
@@ -37,8 +47,10 @@ async function run(): Promise<void> {
     // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
     const client = new GitHub(token);
-    const pullRequest = context.issue;
-    const { sender } = context.payload;
+    const { owner, repo, number } = context.issue;
+    const login = context.payload.pull_request?.user.login as string;
+    const senderType = context.payload.pull_request?.user.type as string;
+    const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
@@ -47,10 +59,14 @@ async function run(): Promise<void> {
       .split(',')
       .map(user => user.trim());
 
-    if (sender && exemptUsers.includes(sender.login)) {
-      debug('User is listed as exempt');
-      debug(`Exempt Users: ${exemptUsers.join(', ')}`);
-      debug(`Pull Request Owner: ${sender.login}`);
+    // Debugging Entries
+    debug('sender', sender);
+    debug('sender type', senderType);
+    debug('quiet mode', quiet.toString());
+    debug('exempt users', exemptUsers.join(','));
+
+    if (sender && exemptUsers.includes(sender)) {
+      debug('success', 'User is listed as exempt');
 
       return;
     }
@@ -69,7 +85,7 @@ async function run(): Promise<void> {
     const branchCheck = branch.match(branchRegex);
 
     if (branchCheck !== null) {
-      debug('Branch name contains a reference to a ticket, updating title');
+      debug('success', 'Branch name contains a reference to a ticket, updating title');
 
       const id = extractId(branch);
 
@@ -80,9 +96,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -91,9 +107,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -107,13 +123,13 @@ async function run(): Promise<void> {
     const body = context?.payload?.pull_request?.body;
 
     if (body === undefined) {
-      debug('Body is undefined');
+      debug('failure', 'Body is undefined');
       setFailed('Could not retrieve the Pull Request body');
 
       return;
     }
 
-    debug(body);
+    debug('body contents', body);
 
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
@@ -121,7 +137,7 @@ async function run(): Promise<void> {
     const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
 
     if (bodyCheck !== null) {
-      debug('Body contains a reference to a ticket, updating title');
+      debug('success', 'Body contains a reference to a ticket, updating title');
 
       const id = extractId(bodyCheck[0]);
 
@@ -132,9 +148,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -143,9 +159,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -164,7 +180,7 @@ async function run(): Promise<void> {
     const bodyURLCheck = body.match(bodyURLRegex);
 
     if (bodyURLCheck !== null) {
-      debug('Body contains a ticket URL, updating title');
+      debug('success', 'Body contains a ticket URL, updating title');
 
       const id = extractId(bodyURLCheck[0]);
 
@@ -175,9 +191,9 @@ async function run(): Promise<void> {
       }
 
       client.pulls.update({
-        owner: pullRequest.owner,
-        repo: pullRequest.repo,
-        pull_number: pullRequest.number,
+        owner,
+        repo,
+        pull_number: number,
         title: titleFormat
           .replace('%prefix%', ticketPrefix)
           .replace('%id%', id)
@@ -186,9 +202,9 @@ async function run(): Promise<void> {
 
       if (!quiet) {
         client.pulls.createReview({
-          owner: pullRequest.owner,
-          repo: pullRequest.repo,
-          pull_number: pullRequest.number,
+          owner,
+          repo,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -197,7 +213,7 @@ async function run(): Promise<void> {
     }
 
     if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
-      debug('Title, branch, and body do not contain a reference to a ticket');
+      debug('failure', 'Title, branch, and body do not contain a reference to a ticket');
       setFailed('No ticket was referenced in this pull request');
 
       return;
