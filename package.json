@@ -1,7 +1,7 @@
 {
   "name": "ticket-check-action",
   "description": "Verify that your pull request titles start with a ticket ID",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
   "license": "MIT",
   "repository": {
