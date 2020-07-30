@@ -60,7 +60,7 @@ inputs:
 
   quiet:
     description: 'Suppress comment on successful PR title update'
-    default: 'false'
+    default: 'true'
     required: false
 
   token:

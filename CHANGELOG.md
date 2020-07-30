@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 (July 30, 2020)
+
+Make `quiet` option default to `true`
+
 ## 1.3.1 (July 20, 2020)
 
 Fix bug with `exemptUsers` field.

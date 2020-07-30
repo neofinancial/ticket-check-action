@@ -121,10 +121,4 @@ jobs:
 | bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
 | exemptUsers       |          | Comma seperated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                       |
-| quiet             |          | If `'true'`, don't comment when a PR title is updated                                                                                                | false                 |
-
-## Caveat
-
-There is limitation currently in the way GitHub triggers their checks. If the pull request fails, a new commit is required (even as simple as an empty one `git commit -m "retrigger checks" --allow-empty` ) to flush the old statuses and re-run a new sequence of checks.
-
-For updates see the community forum thread here: https://github.community/t5/GitHub-Actions/Editing-a-PR-title-or-first-comment-causing-a-pile-up-of-runs/td-p/53932
+| quiet             |          | If `true`, don't comment when a PR title is updated                                                                                                  | true                  |
