@@ -72,7 +72,7 @@ async function run(): Promise<void> {
     }
 
     // get the title format and ticket prefix
-    const ticketPrefix = getInput('ticketPrefix', { required: true });
+    const ticketPrefix = getInput('ticketPrefix');
     const titleFormat = getInput('titleFormat', { required: true });
 
     // Check for a ticket reference in the branch
