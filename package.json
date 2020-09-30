@@ -36,16 +36,15 @@
     ]
   },
   "devDependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0",
-    "@octokit/action": "^3.1.1",
-    "@types/node": "^14.11.2",
-    "@zeit/ncc": "^0.22.3",
-    "eslint": "^6.8.0",
-    "eslint-config-neo": "^0.5.2",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.4.0",
-    "prettier": "^1.19.1",
-    "typescript": "^3.9.7"
+    "@actions/core": "1.2.3",
+    "@actions/github": "2.1.1",
+    "@types/node": "13.11.0",
+    "@zeit/ncc": "0.22.0",
+    "eslint": "6.8.0",
+    "eslint-config-neo": "0.5.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "1.19.1",
+    "typescript": "3.8.3"
   }
 }
