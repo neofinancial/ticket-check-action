@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@fix-build
+        uses: neofinancial/ticket-check-action@v1
         with:
           ticketPrefix: 'CH-'
           titleRegex: '^(CH)(-?)(\d{3,})'
