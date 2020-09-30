@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import { debug as log, getInput, setFailed } from '@actions/core';
-import { context, GitHub } from '@actions/github';
+import { context } from '@actions/github';
+import { Octokit } from '@octokit/action';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
 const extractId = (value: string): string | null => {
@@ -45,8 +46,7 @@ async function run(): Promise<void> {
     }
 
     // Instantiate a GitHub Client instance
-    const token = getInput('token', { required: true });
-    const client = new GitHub(token);
+    const client = new Octokit();
     const { owner, repo, number } = context.issue;
     const login = context.payload.pull_request?.user.login as string;
     const senderType = context.payload.pull_request?.user.type as string;

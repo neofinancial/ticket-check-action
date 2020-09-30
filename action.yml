@@ -63,10 +63,6 @@ inputs:
     default: 'true'
     required: false
 
-  token:
-    description: 'GitHub authentication token'
-    required: true
-
 runs:
   using: 'node12'
   main: 'build/index.js'

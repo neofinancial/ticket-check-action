@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3 (September 30, 2020)
+
+Make ticket prefix optional
+
 ## 1.3.2 (July 30, 2020)
 
 Make `quiet` option default to `true`
