@@ -64,8 +64,8 @@ inputs:
     required: false
 
   token:
-    description: 'DEPRECATED: GitHub authentication token'
-    required: false
+    description: 'GitHub authentication token'
+    required: true
 
 runs:
   using: 'node12'
