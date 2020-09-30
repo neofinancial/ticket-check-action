@@ -58,6 +58,11 @@ inputs:
     default: ''
     required: false
 
+  failOnMissing:
+    description: 'Fail the check if no ticket reference is found'
+    default: 'true'
+    required: false
+
   quiet:
     description: 'Suppress comment on successful PR title update'
     default: 'true'

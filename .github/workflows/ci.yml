@@ -37,3 +37,18 @@ jobs:
           ref: v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  title:
+    name: ticket check
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check for ticket
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ticketPrefix: '#'
+          titleRegex: '^#(\d+)'
+          branchRegex: '^(\d+)'
+          bodyRegex: '#(\d+)'
+          bodyURLRegex: 'http(s?):\/\/(github.com)(\/:owner)(\/:repo)(\/issues)\/\d+'

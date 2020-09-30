@@ -74,6 +74,7 @@ async function run(): Promise<void> {
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix');
     const titleFormat = getInput('titleFormat', { required: true });
+    const failOnMissing = getInput('failOnMissing', { required: false }) === 'true';
 
     // Check for a ticket reference in the branch
     const branch: string = context.payload.pull_request?.head.ref;
@@ -90,7 +91,7 @@ async function run(): Promise<void> {
       const id = extractId(branch);
 
       if (id === null) {
-        setFailed('Could not extract a ticket ID reference from the branch');
+        failOnMissing && setFailed('Could not extract a ticket ID reference from the branch');
 
         return;
       }
@@ -124,7 +125,7 @@ async function run(): Promise<void> {
 
     if (body === undefined) {
       debug('failure', 'Body is undefined');
-      setFailed('Could not retrieve the Pull Request body');
+      failOnMissing && setFailed('Could not retrieve the Pull Request body');
 
       return;
     }
@@ -142,7 +143,7 @@ async function run(): Promise<void> {
       const id = extractId(bodyCheck[0]);
 
       if (id === null) {
-        setFailed('Could not extract a ticket shorthand reference from the body');
+        failOnMissing && setFailed('Could not extract a ticket shorthand reference from the body');
 
         return;
       }
@@ -185,7 +186,7 @@ async function run(): Promise<void> {
       const id = extractId(bodyURLCheck[0]);
 
       if (id === null) {
-        setFailed('Could not extract a ticket URL from the body');
+        failOnMissing && setFailed('Could not extract a ticket URL from the body');
 
         return;
       }
@@ -214,7 +215,7 @@ async function run(): Promise<void> {
 
     if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
       debug('failure', 'Title, branch, and body do not contain a reference to a ticket');
-      setFailed('No ticket was referenced in this pull request');
+      failOnMissing && setFailed('No ticket was referenced in this pull request');
 
       return;
     }
