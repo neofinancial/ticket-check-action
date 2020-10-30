@@ -44,6 +44,7 @@ jobs:
         uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ticketLink: 'https://github.com/:owner/:repo/issues/%ticketNumber%'
           ticketPrefix: '#'
           titleRegex: '^#(\d+)'
           branchRegex: '^(\d+)'
@@ -70,6 +71,7 @@ jobs:
         uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ticketLink: 'https://:org.atlassian.net/browse/PROJ-%ticketNumber%'
           ticketPrefix: 'PROJ-'
           titleRegex: '^PROJ-(\d+)'
           branchRegex: '^PROJ-(\d+)'
@@ -96,6 +98,7 @@ jobs:
         uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ticketLink: 'https://app.clubhouse.io/:org/story/%ticketNumber%'
           ticketPrefix: 'CH-'
           titleRegex: '^(CH)(-?)(\d{3,})'
           branchRegex: '^(CH)(-?)(\d{3,})'
@@ -107,18 +110,19 @@ jobs:
 
 ## Inputs
 
-| Name              | Required | Description                                                                                                                                          | default               |
-| ----------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| token             | ✅       | The GitHub access token                                                                                                                              |                       |
-| ticketPrefix      |          | The unique identifier for the ticket/issue                                                                                                           |                       |
-| titleFormat       |          | The intended format the title should be set to if it doesn't match the regular expression. Available variables are `%prefix%`, `%id%`, and `%title%` | %prefix%%id%: %title% |
-| titleRegex        |          | The regular expression used to search the title for the intended format                                                                              | ^(CH)(-?)(\d{3,})     |
-| titleRegexFlags   |          | The regular expression flags applied to the title regular expression                                                                                 | gi                    |
-| branchRegex       |          | The regular expression used to search the branch for the intended format                                                                             | ^(CH)(-?)(\d{3,})     |
-| branchRegexFlags  |          | The regular expression flags applied to the branch regular expression                                                                                | gi                    |
-| bodyRegex         |          | The regular expression used to search the body for a shorthand reference (example `#123`)                                                            | (CH)(-?)(\d{3,})      |
-| bodyRegexFlags    |          | The flags applied to the body regular expression when searching for a shorthand reference                                                            | gim                   |
-| bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                       |
-| bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                   |
-| exemptUsers       |          | Comma separated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                       |
-| quiet             |          | If `true`, don't comment when a PR title is updated                                                                                                  | true                  |
+| Name              | Required | Description                                                                                                                                          | default                          |
+| ----------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| token             | ✅       | The GitHub access token                                                                                                                              |                                  |
+| ticketLink        |          | The URL format for a link to a ticket with a `%ticketNumber%` placeholder                                                                            |                                  |
+| ticketPrefix      |          | The unique identifier for the ticket/issue                                                                                                           |                                  |
+| titleFormat       |          | The intended format the title should be set to if it doesn't match the regular expression. Available variables are `%prefix%`, `%id%`, and `%title%` | %prefix%%id%: %title%            |
+| titleRegex        |          | The regular expression used to search the title for the intended format                                                                              | ^(CH)(-?)(?<ticketNumber>\d{3,}) |
+| titleRegexFlags   |          | The regular expression flags applied to the title regular expression                                                                                 | gi                               |
+| branchRegex       |          | The regular expression used to search the branch for the intended format                                                                             | ^(CH)(-?)(?<ticketNumber>\d{3,}) |
+| branchRegexFlags  |          | The regular expression flags applied to the branch regular expression                                                                                | gi                               |
+| bodyRegex         |          | The regular expression used to search the body for a shorthand reference (example `#123`)                                                            | (CH)(-?)(?<ticketNumber>\d{3,})  |
+| bodyRegexFlags    |          | The flags applied to the body regular expression when searching for a shorthand reference                                                            | gim                              |
+| bodyURLRegex      |          | The regular expression used to search the body for a URL reference (example `https://github.com/octocat/hello-world/issues/1`)                       |                                  |
+| bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                              |
+| exemptUsers       |          | Comma separated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                                  |
+| quiet             |          | If `true`, don't comment when a PR title is updated                                                                                                  | true                             |

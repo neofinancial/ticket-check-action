@@ -15,7 +15,7 @@ inputs:
 
   titleRegex:
     description: 'The regular expression used to search the title for the intended format'
-    default: '^(CH)(-?)(\d{3,})'
+    default: '^(CH)(-?)(?<ticketNumber>\d{3,})'
     required: true
 
   titleRegexFlags:
@@ -25,7 +25,7 @@ inputs:
 
   branchRegex:
     description: 'The regular expression used to search the branch for the intended format'
-    default: '^(CH)(-?)(\d{3,})'
+    default: '^(CH)(-?)(?<ticketNumber>\d{3,})'
     required: true
 
   branchRegexFlags:
@@ -35,7 +35,7 @@ inputs:
 
   bodyRegex:
     description: 'The regular expression used to search the body for a shorthand reference'
-    default: '(CH)(-?)(\d{3,})'
+    default: '(CH)(-?)(?<ticketNumber>\d{3,})'
     required: true
 
   bodyRegexFlags:
@@ -66,6 +66,11 @@ inputs:
   token:
     description: 'GitHub authentication token'
     required: true
+
+  ticketLink:
+    description: 'Ticket URL with `%ticketNumber%` placeholder'
+    default: 'https://app.clubhouse.io/neofinancial/story/%ticketNumber%'
+    required: false
 
 runs:
   using: 'node12'

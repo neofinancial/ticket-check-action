@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 (October 29, 2020)
+
+Add `ticketLink` input for automatically linking to tickets using `(?<ticketNumber>)` group in `titleRegex`, `branchRegex` and `bodyRegex`.
+
 ## 1.3.3 (September 30, 2020)
 
 Make ticket prefix optional

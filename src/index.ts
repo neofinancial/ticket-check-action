@@ -32,17 +32,9 @@ async function run(): Promise<void> {
     const titleRegexFlags = getInput('titleRegexFlags', {
       required: true
     });
+    const ticketLink = getInput('ticketLink', { required: false });
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
     const titleCheck = title.match(titleRegex);
-
-    debug('title', title);
-
-    // Return and approve if the title includes a Ticket ID
-    if (titleCheck !== null) {
-      debug('success', 'Title includes a ticket ID');
-
-      return;
-    }
 
     // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
@@ -51,6 +43,44 @@ async function run(): Promise<void> {
     const login = context.payload.pull_request?.user.login as string;
     const senderType = context.payload.pull_request?.user.type as string;
     const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
+
+    const linkTicket = (matchArray: RegExpMatchArray): void => {
+      if (!ticketLink) {
+        return;
+      }
+
+      const ticketNumber = matchArray.groups?.ticketNumber;
+
+      if (!ticketNumber) {
+        debug('ticketNumber not found', 'ticketNumber group not found in match array.');
+
+        return;
+      }
+
+      if (!ticketLink.includes('%ticketNumber%')) {
+        debug('invalid ticketLink', 'ticketLink must include "%ticketNumber%" variable to post ticket link.');
+
+        return;
+      }
+
+      client.pulls.createReview({
+        owner,
+        repo,
+        pull_number: number,
+        body: `See the [ticket for this pull request](${ticketLink.replace('%ticketNumber%', ticketNumber)}).`,
+        event: 'COMMENT'
+      });
+    };
+
+    debug('title', title);
+
+    // Return and approve if the title includes a Ticket ID
+    if (titleCheck !== null) {
+      debug('success', 'Title includes a ticket ID');
+      linkTicket(titleCheck);
+
+      return;
+    }
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
@@ -64,6 +94,7 @@ async function run(): Promise<void> {
     debug('sender type', senderType);
     debug('quiet mode', quiet.toString());
     debug('exempt users', exemptUsers.join(','));
+    debug('ticket link', ticketLink);
 
     if (sender && exemptUsers.includes(sender)) {
       debug('success', 'User is listed as exempt');
@@ -116,6 +147,8 @@ async function run(): Promise<void> {
         });
       }
 
+      linkTicket(branchCheck);
+
       return;
     }
 
@@ -167,6 +200,8 @@ async function run(): Promise<void> {
           event: 'COMMENT'
         });
       }
+
+      linkTicket(bodyCheck);
 
       return;
     }
