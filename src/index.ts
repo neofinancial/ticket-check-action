@@ -44,7 +44,7 @@ async function run(): Promise<void> {
     const senderType = context.payload.pull_request?.user.type as string;
     const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
-    const linkTicket = (matchArray: RegExpMatchArray): void => {
+    const linkTicket = async (matchArray: RegExpMatchArray): Promise<void> => {
       debug('match array for linkTicket', JSON.stringify(matchArray));
       debug('match array groups for linkTicket', JSON.stringify(matchArray.groups));
 
@@ -66,11 +66,28 @@ async function run(): Promise<void> {
         return;
       }
 
+      const ticketLinkBody = `See the [ticket for this pull request](${ticketLink.replace(
+        '%ticketNumber%',
+        ticketNumber
+      )}).`;
+
+      const currentReviews = await client.pulls.listReviews({
+        owner,
+        repo,
+        pull_number: number
+      });
+
+      if (currentReviews?.length && currentReviews.some((review: any) => review?.body === ticketLinkBody)) {
+        debug('already posted ticketLink', 'found an existing review that contains the ticket link');
+
+        return;
+      }
+
       client.pulls.createReview({
         owner,
         repo,
         pull_number: number,
-        body: `See the [ticket for this pull request](${ticketLink.replace('%ticketNumber%', ticketNumber)}).`,
+        body: ticketLinkBody,
         event: 'COMMENT'
       });
     };
@@ -80,7 +97,7 @@ async function run(): Promise<void> {
     // Return and approve if the title includes a Ticket ID
     if (titleCheck !== null) {
       debug('success', 'Title includes a ticket ID');
-      linkTicket(titleCheck);
+      await linkTicket(titleCheck);
 
       return;
     }
@@ -150,7 +167,7 @@ async function run(): Promise<void> {
         });
       }
 
-      linkTicket(branchCheck);
+      await linkTicket(branchCheck);
 
       return;
     }
@@ -205,7 +222,7 @@ async function run(): Promise<void> {
         });
       }
 
-      linkTicket(bodyCheck);
+      await linkTicket(bodyCheck);
 
       return;
     }
