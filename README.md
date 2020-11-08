@@ -51,7 +51,7 @@ jobs:
           titleRegex: '^#(?<ticketNumber>\d+)'
           branchRegex: '^(?<ticketNumber>\d+)'
           bodyRegex: '#(?<ticketNumber>\d+)'
-          bodyURLRegex: 'http(s?):\/\/(github.com)(\/:owner)(\/:repo)(\/issues)\/\d+'
+          bodyURLRegex: 'http(s?):\/\/(github.com)(\/:owner)(\/:repo)(\/issues)\/(?<ticketNumber>\d+)'
 ```
 
 ### Jira
@@ -78,7 +78,7 @@ jobs:
           titleRegex: '^PROJ-(?<ticketNumber>\d+)'
           branchRegex: '^PROJ-(?<ticketNumber>\d+)'
           bodyRegex: 'PROJ-(?<ticketNumber>\d+)'
-          bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)\d+'
+          bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)(?<ticketNumber>\d+)'
 ```
 
 ### Clubhouse
@@ -105,7 +105,7 @@ jobs:
           titleRegex: '^(CH)(-?)(?<ticketNumber>\d{3,})'
           branchRegex: '^(CH)(-?)(?<ticketNumber>\d{3,})'
           bodyRegex: '(CH)(-?)(?<ticketNumber>\d{3,})'
-          bodyURLRegex: 'http(s?):\/\/(app.clubhouse.io)(\/:org)(\/story)\/\d+'
+          bodyURLRegex: 'http(s?):\/\/(app.clubhouse.io)(\/:org)(\/story)\/(?<ticketNumber>\d+)'
 ```
 
 </details>
