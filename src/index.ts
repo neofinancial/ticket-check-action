@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import { debug as log, getInput, setFailed } from '@actions/core';
-import { context, GitHub } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
 const extractId = (value: string): string | null => {
@@ -34,17 +34,20 @@ async function run(): Promise<void> {
     });
     const ticketLink = getInput('ticketLink', { required: false });
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
-    const titleCheck = title.match(titleRegex);
+    const titleCheck = titleRegex.exec(title);
 
     // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
-    const client = new GitHub(token);
+    const client = getOctokit(token);
     const { owner, repo, number } = context.issue;
     const login = context.payload.pull_request?.user.login as string;
     const senderType = context.payload.pull_request?.user.type as string;
     const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
     const linkTicket = (matchArray: RegExpMatchArray): void => {
+      debug('match array for linkTicket', JSON.stringify(matchArray));
+      debug('match array groups for linkTicket', JSON.stringify(matchArray.groups));
+
       if (!ticketLink) {
         return;
       }
@@ -113,7 +116,7 @@ async function run(): Promise<void> {
       required: true
     });
     const branchRegex = new RegExp(branchRegexBase, branchRegexFlags);
-    const branchCheck = branch.match(branchRegex);
+    const branchCheck = branchRegex.exec(branch);
 
     if (branchCheck !== null) {
       debug('success', 'Branch name contains a reference to a ticket, updating title');
@@ -167,7 +170,8 @@ async function run(): Promise<void> {
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
     const bodyRegexFlags = getInput('bodyRegexFlags', { required: true });
-    const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
+    const bodyRegex = new RegExp(bodyRegexBase, bodyRegexFlags);
+    const bodyCheck = bodyRegex.exec(body);
 
     if (bodyCheck !== null) {
       debug('success', 'Body contains a reference to a ticket, updating title');
@@ -212,7 +216,7 @@ async function run(): Promise<void> {
       required: true
     });
     const bodyURLRegex = new RegExp(bodyURLRegexBase, bodyURLRegexFlags);
-    const bodyURLCheck = body.match(bodyURLRegex);
+    const bodyURLCheck = bodyURLRegex.exec(body);
 
     if (bodyURLCheck !== null) {
       debug('success', 'Body contains a ticket URL, updating title');

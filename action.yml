@@ -69,7 +69,6 @@ inputs:
 
   ticketLink:
     description: 'Ticket URL with `%ticketNumber%` placeholder'
-    default: 'https://app.clubhouse.io/neofinancial/story/%ticketNumber%'
     required: false
 
 runs:
