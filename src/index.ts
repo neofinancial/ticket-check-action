@@ -211,7 +211,15 @@ async function run(): Promise<void> {
     }
 
     // Last ditch effort, check for a ticket reference URL in the body
-    const bodyURLRegexBase = getInput('bodyURLRegex', { required: true });
+    const bodyURLRegexBase = getInput('bodyURLRegex', { required: false });
+
+    if (!bodyURLRegexBase) {
+      debug('failure', 'Title, branch, and body do not contain a reference to a ticket, and no body URL regex was set');
+      setFailed('No ticket was referenced in this pull request');
+
+      return;
+    }
+
     const bodyURLRegexFlags = getInput('bodyURLRegexFlags', {
       required: true
     });
