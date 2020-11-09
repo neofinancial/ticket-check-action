@@ -66,10 +66,7 @@ async function run(): Promise<void> {
         return;
       }
 
-      const ticketLinkBody = `See the [ticket for this pull request](${ticketLink.replace(
-        '%ticketNumber%',
-        ticketNumber
-      )}).`;
+      const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
 
       const currentReviews = await client.pulls.listReviews({
         owner,
@@ -77,7 +74,12 @@ async function run(): Promise<void> {
         pull_number: number
       });
 
-      if (currentReviews?.length && currentReviews.some((review: any) => review?.body === ticketLinkBody)) {
+      debug('current reviews', JSON.stringify(currentReviews));
+
+      if (
+        currentReviews?.data?.length &&
+        currentReviews?.data.some((review: { body?: string }) => review?.body?.includes(linkToTicket))
+      ) {
         debug('already posted ticketLink', 'found an existing review that contains the ticket link');
 
         return;
@@ -87,7 +89,7 @@ async function run(): Promise<void> {
         owner,
         repo,
         pull_number: number,
-        body: ticketLinkBody,
+        body: `See the ticket for this pull request: ${linkToTicket}`,
         event: 'COMMENT'
       });
     };
