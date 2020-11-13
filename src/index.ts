@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import { debug as log, getInput, setFailed } from '@actions/core';
-import { context, GitHub } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
 const extractId = (value: string): string | null => {
@@ -32,25 +32,77 @@ async function run(): Promise<void> {
     const titleRegexFlags = getInput('titleRegexFlags', {
       required: true
     });
+    const ticketLink = getInput('ticketLink', { required: false });
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
-    const titleCheck = title.match(titleRegex);
+    const titleCheck = titleRegex.exec(title);
+
+    // Instantiate a GitHub Client instance
+    const token = getInput('token', { required: true });
+    const client = getOctokit(token);
+    const { owner, repo, number } = context.issue;
+    const login = context.payload.pull_request?.user.login as string;
+    const senderType = context.payload.pull_request?.user.type as string;
+    const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
+
+    const linkTicket = async (matchArray: RegExpMatchArray): Promise<void> => {
+      debug('match array for linkTicket', JSON.stringify(matchArray));
+      debug('match array groups for linkTicket', JSON.stringify(matchArray.groups));
+
+      if (!ticketLink) {
+        return;
+      }
+
+      const ticketNumber = matchArray.groups?.ticketNumber;
+
+      if (!ticketNumber) {
+        debug('ticketNumber not found', 'ticketNumber group not found in match array.');
+
+        return;
+      }
+
+      if (!ticketLink.includes('%ticketNumber%')) {
+        debug('invalid ticketLink', 'ticketLink must include "%ticketNumber%" variable to post ticket link.');
+
+        return;
+      }
+
+      const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
+
+      const currentReviews = await client.pulls.listReviews({
+        owner,
+        repo,
+        pull_number: number
+      });
+
+      debug('current reviews', JSON.stringify(currentReviews));
+
+      if (
+        currentReviews?.data?.length &&
+        currentReviews?.data.some((review: { body?: string }) => review?.body?.includes(linkToTicket))
+      ) {
+        debug('already posted ticketLink', 'found an existing review that contains the ticket link');
+
+        return;
+      }
+
+      client.pulls.createReview({
+        owner,
+        repo,
+        pull_number: number,
+        body: `See the ticket for this pull request: ${linkToTicket}`,
+        event: 'COMMENT'
+      });
+    };
 
     debug('title', title);
 
     // Return and approve if the title includes a Ticket ID
     if (titleCheck !== null) {
       debug('success', 'Title includes a ticket ID');
+      await linkTicket(titleCheck);
 
       return;
     }
-
-    // Instantiate a GitHub Client instance
-    const token = getInput('token', { required: true });
-    const client = new GitHub(token);
-    const { owner, repo, number } = context.issue;
-    const login = context.payload.pull_request?.user.login as string;
-    const senderType = context.payload.pull_request?.user.type as string;
-    const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
     const quiet = getInput('quiet', { required: false }) === 'true';
 
@@ -64,6 +116,7 @@ async function run(): Promise<void> {
     debug('sender type', senderType);
     debug('quiet mode', quiet.toString());
     debug('exempt users', exemptUsers.join(','));
+    debug('ticket link', ticketLink);
 
     if (sender && exemptUsers.includes(sender)) {
       debug('success', 'User is listed as exempt');
@@ -82,7 +135,7 @@ async function run(): Promise<void> {
       required: true
     });
     const branchRegex = new RegExp(branchRegexBase, branchRegexFlags);
-    const branchCheck = branch.match(branchRegex);
+    const branchCheck = branchRegex.exec(branch);
 
     if (branchCheck !== null) {
       debug('success', 'Branch name contains a reference to a ticket, updating title');
@@ -116,6 +169,8 @@ async function run(): Promise<void> {
         });
       }
 
+      await linkTicket(branchCheck);
+
       return;
     }
 
@@ -134,7 +189,8 @@ async function run(): Promise<void> {
     // Check for a ticket reference number in the body
     const bodyRegexBase = getInput('bodyRegex', { required: true });
     const bodyRegexFlags = getInput('bodyRegexFlags', { required: true });
-    const bodyCheck = body.match(new RegExp(bodyRegexBase, bodyRegexFlags));
+    const bodyRegex = new RegExp(bodyRegexBase, bodyRegexFlags);
+    const bodyCheck = bodyRegex.exec(body);
 
     if (bodyCheck !== null) {
       debug('success', 'Body contains a reference to a ticket, updating title');
@@ -168,16 +224,26 @@ async function run(): Promise<void> {
         });
       }
 
+      await linkTicket(bodyCheck);
+
       return;
     }
 
     // Last ditch effort, check for a ticket reference URL in the body
-    const bodyURLRegexBase = getInput('bodyURLRegex', { required: true });
+    const bodyURLRegexBase = getInput('bodyURLRegex', { required: false });
+
+    if (!bodyURLRegexBase) {
+      debug('failure', 'Title, branch, and body do not contain a reference to a ticket, and no body URL regex was set');
+      setFailed('No ticket was referenced in this pull request');
+
+      return;
+    }
+
     const bodyURLRegexFlags = getInput('bodyURLRegexFlags', {
       required: true
     });
     const bodyURLRegex = new RegExp(bodyURLRegexBase, bodyURLRegexFlags);
-    const bodyURLCheck = body.match(bodyURLRegex);
+    const bodyURLCheck = bodyURLRegex.exec(body);
 
     if (bodyURLCheck !== null) {
       debug('success', 'Body contains a ticket URL, updating title');
