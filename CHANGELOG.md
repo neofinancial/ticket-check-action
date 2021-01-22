@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 (January 22, 2021)
+
+Add `errorMessage` input to customize the error message.
+
 ## 1.4.0 (November 8, 2020)
 
 Add `ticketLink` input for automatically linking to tickets using `(?<ticketNumber>)` group in `titleRegex`, `branchRegex` and `bodyRegex`.

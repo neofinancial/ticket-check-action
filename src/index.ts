@@ -26,6 +26,9 @@ async function run(): Promise<void> {
     // Provide complete context object right away if debugging
     debug('context', JSON.stringify(context));
 
+    // Create an error message reference
+    const errorMessage = getInput('errorMessage') || 'No ticket was referenced in this pull request';
+
     // Check for a ticket reference in the title
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
@@ -234,7 +237,7 @@ async function run(): Promise<void> {
 
     if (!bodyURLRegexBase) {
       debug('failure', 'Title, branch, and body do not contain a reference to a ticket, and no body URL regex was set');
-      setFailed('No ticket was referenced in this pull request');
+      setFailed(errorMessage);
 
       return;
     }
@@ -280,7 +283,7 @@ async function run(): Promise<void> {
 
     if (titleCheck === null && branchCheck === null && bodyCheck === null && bodyURLCheck === null) {
       debug('failure', 'Title, branch, and body do not contain a reference to a ticket');
-      setFailed('No ticket was referenced in this pull request');
+      setFailed(errorMessage);
 
       return;
     }
