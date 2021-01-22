@@ -2,7 +2,7 @@
 
 ## 1.5.0 (January 22, 2021)
 
-Add `errorMessage` input to customize the error message.
+Add optional `errorMessage` input to customize the error message.
 
 ## 1.4.0 (November 8, 2020)
 
