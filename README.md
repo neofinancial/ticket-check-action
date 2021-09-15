@@ -81,7 +81,7 @@ jobs:
           bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)(?<ticketNumber>\d+)'
 ```
 
-### Shortcut (former Clubhouse)
+### Shortcut (formerly Clubhouse)
 
 ```yml
 name: Pull Request Lint
