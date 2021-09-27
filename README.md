@@ -105,7 +105,7 @@ jobs:
           titleRegex: '^(CH|sc)(-?)(?<ticketNumber>\d+)'
           branchRegex: '^(CH|sc)(-?)(?<ticketNumber>\d+)'
           bodyRegex: '(CH|sc)(-?)(?<ticketNumber>\d+)'
-          bodyURLRegex: 'https?:\/\/app\.(clubhouse.io|shortcut.com)(\/:org)\/story\/(?<ticketNumber>\d+)\/.+'
+          bodyURLRegex: 'https?:\/\/app\.(clubhouse.io|shortcut.com)(\/:org)\/story\/(?<ticketNumber>\d+)'
 ```
 
 </details>
