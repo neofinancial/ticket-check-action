@@ -81,7 +81,7 @@ jobs:
           bodyURLRegex: 'http(s?):\/\/(:org.atlassian.net)(\/browse)\/(PROJ\-)(?<ticketNumber>\d+)'
 ```
 
-### Clubhouse
+### Shortcut (formerly Clubhouse)
 
 ```yml
 name: Pull Request Lint
@@ -100,12 +100,12 @@ jobs:
         uses: neofinancial/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ticketLink: 'https://app.clubhouse.io/:org/story/%ticketNumber%'
-          ticketPrefix: 'CH-'
-          titleRegex: '^(CH)(-?)(?<ticketNumber>\d{3,})'
-          branchRegex: '^(CH)(-?)(?<ticketNumber>\d{3,})'
-          bodyRegex: '(CH)(-?)(?<ticketNumber>\d{3,})'
-          bodyURLRegex: 'http(s?):\/\/(app.clubhouse.io)(\/:org)(\/story)\/(?<ticketNumber>\d+)'
+          ticketLink: 'https://app.shortcut.com/:org/story/%ticketNumber%'
+          ticketPrefix: 'SC-'
+          titleRegex: '^(CH|sc)(-?)(?<ticketNumber>\d+)'
+          branchRegex: '^(CH|sc)(-?)(?<ticketNumber>\d+)'
+          bodyRegex: '(CH|sc)(-?)(?<ticketNumber>\d+)'
+          bodyURLRegex: 'https?:\/\/app\.(clubhouse.io|shortcut.com)(\/:org)\/story\/(?<ticketNumber>\d+)'
 ```
 
 </details>
