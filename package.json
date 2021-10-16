@@ -14,7 +14,8 @@
     "build": "NODE_ENV=production ncc build src/index.ts -o build --minify",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "lint": "eslint \"**/*.{ts,js}\""
+    "lint": "eslint \"**/*.{ts,js}\"",
+    "pre-commit": "lint-staged"
   },
   "keywords": [
     "actions",
