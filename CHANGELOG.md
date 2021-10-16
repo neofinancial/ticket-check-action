@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.1 (Oct 16, 2021)
+
+Switch to npm
+Update eslint to 7.x
+
 ## 1.4.0 (November 8, 2020)
 
 Add `ticketLink` input for automatically linking to tickets using `(?<ticketNumber>)` group in `titleRegex`, `branchRegex` and `bodyRegex`.
