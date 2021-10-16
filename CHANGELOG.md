@@ -2,7 +2,7 @@
 
 ## 1.4.1 (Oct 16, 2021)
 
-Update eslint to 8.0.1 and eslint config to 0.6.2
+Update eslint to 7.x
 
 ## 1.4.0 (November 8, 2020)
 
