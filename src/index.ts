@@ -285,7 +285,7 @@ async function run(): Promise<void> {
       return;
     }
   } catch (error) {
-    setFailed(error.message);
+    setFailed(error instanceof Error ? error.message : JSON.stringify(error));
   }
 }
 
