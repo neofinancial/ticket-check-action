@@ -1,4 +1,4 @@
-name: 'Pull Request Ticket Check Action'
+name: 'PR Ticket-Url Presence Action'
 description: 'Verify that pull request has a ticket ID'
 author: 'M Shaharyar'
 
