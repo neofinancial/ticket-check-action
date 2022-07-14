@@ -40,6 +40,7 @@ async function run(): Promise<void> {
     // const token = getInput('token', { required: true });
     // const client = getOctokit(token);
     // const { owner, repo, number } = context.issue;
+
     const login = context.payload.pull_request?.user.login as string;
     const senderType = context.payload.pull_request?.user.type as string;
     const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
