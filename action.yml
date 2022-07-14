@@ -1,6 +1,6 @@
 name: 'Pull Request Ticket Check Action'
-description: 'Verify that pull request titles start with a ticket ID'
-author: 'Neo Financial Engineering'
+description: 'Verify that pull request has a ticket ID'
+author: 'M Shaharyar'
 
 inputs:
   ticketPrefix:

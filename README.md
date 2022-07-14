@@ -1,7 +1,5 @@
 # Pull Request Ticket Check Action
 
-[![Build status](https://github.com/neofinancial/ticket-check-action/workflows/CI/badge.svg)](https://github.com/neofinancial/ticket-check-action/actions)
-
 Verify that pull request titles start with a ticket ID
 
 ## Overview
@@ -43,7 +41,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1
+        uses: shaharyar123/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketLink: 'https://github.com/:owner/:repo/issues/%ticketNumber%'
@@ -70,7 +68,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1
+        uses: shaharyar123/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketLink: 'https://:org.atlassian.net/browse/PROJ-%ticketNumber%'
@@ -97,7 +95,7 @@ jobs:
 
     steps:
       - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1
+        uses: shaharyar123/ticket-check-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ticketLink: 'https://app.shortcut.com/:org/story/%ticketNumber%'
