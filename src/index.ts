@@ -44,6 +44,13 @@ async function run(): Promise<void> {
     const senderType = context.payload.pull_request?.user.type as string;
     const sender: string = senderType === 'Bot' ? login.replace('[bot]', '') : login;
 
+    const quiet = getInput('quiet', { required: false }) === 'true';
+
+    // Exempt Users
+    const exemptUsers = getInput('exemptUsers', { required: false })
+      .split(',')
+      .map(user => user.trim());
+
     const linkTicket = async (matchArray: RegExpMatchArray): Promise<void> => {
       debug('match array for linkTicket', JSON.stringify(matchArray));
       debug('match array groups for linkTicket', JSON.stringify(matchArray.groups));
@@ -94,36 +101,6 @@ async function run(): Promise<void> {
       });
     };
 
-    debug('title', title);
-
-    // Return and approve if the title includes a Ticket ID
-    if (titleCheck !== null) {
-      debug('success', 'Title includes a ticket ID');
-      await linkTicket(titleCheck);
-
-      return;
-    }
-
-    const quiet = getInput('quiet', { required: false }) === 'true';
-
-    // Exempt Users
-    const exemptUsers = getInput('exemptUsers', { required: false })
-      .split(',')
-      .map(user => user.trim());
-
-    // Debugging Entries
-    debug('sender', sender);
-    debug('sender type', senderType);
-    debug('quiet mode', quiet.toString());
-    debug('exempt users', exemptUsers.join(','));
-    debug('ticket link', ticketLink);
-
-    if (sender && exemptUsers.includes(sender)) {
-      debug('success', 'User is listed as exempt');
-
-      return;
-    }
-
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix');
     const titleFormat = getInput('titleFormat', { required: true });
@@ -170,6 +147,19 @@ async function run(): Promise<void> {
       }
 
       await linkTicket(branchCheck);
+
+      return;
+    }
+
+    // Debugging Entries
+    debug('sender', sender);
+    debug('sender type', senderType);
+    debug('quiet mode', quiet.toString());
+    debug('exempt users', exemptUsers.join(','));
+    debug('ticket link', ticketLink);
+
+    if (sender && exemptUsers.includes(sender)) {
+      debug('success', 'User is listed as exempt');
 
       return;
     }
@@ -225,6 +215,16 @@ async function run(): Promise<void> {
       }
 
       await linkTicket(bodyCheck);
+
+      return;
+    }
+
+    debug('title', title);
+
+    // Return and approve if the title includes a Ticket ID
+    if (titleCheck !== null) {
+      debug('success', 'Title includes a ticket ID');
+      await linkTicket(titleCheck);
 
       return;
     }
