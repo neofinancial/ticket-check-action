@@ -125,15 +125,17 @@ async function run(): Promise<void> {
         return;
       }
 
-      client.pulls.update({
-        owner,
-        repo,
-        pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
-      });
+      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+        client.pulls.update({
+          owner,
+          repo,
+          pull_number: number,
+          title: titleFormat
+            .replace('%prefix%', ticketPrefix)
+            .replace('%id%', id)
+            .replace('%title%', title)
+        });
+      }
 
       if (!quiet) {
         client.pulls.createReview({
@@ -193,15 +195,17 @@ async function run(): Promise<void> {
         return;
       }
 
-      client.pulls.update({
-        owner,
-        repo,
-        pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
-      });
+      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+        client.pulls.update({
+          owner,
+          repo,
+          pull_number: number,
+          title: titleFormat
+            .replace('%prefix%', ticketPrefix)
+            .replace('%id%', id)
+            .replace('%title%', title)
+        });
+      }
 
       if (!quiet) {
         client.pulls.createReview({
@@ -256,15 +260,17 @@ async function run(): Promise<void> {
         return;
       }
 
-      client.pulls.update({
-        owner,
-        repo,
-        pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
-      });
+      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+        client.pulls.update({
+          owner,
+          repo,
+          pull_number: number,
+          title: titleFormat
+            .replace('%prefix%', ticketPrefix)
+            .replace('%id%', id)
+            .replace('%title%', title)
+        });
+      }
 
       if (!quiet) {
         client.pulls.createReview({
