@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.0 (Feb 16, 2023)
+
+Changed the order of checks to do title last as the other checks can impact it by changing the title.
+
+Previously it was possible for the initial title check to get skipped, and later title checks to be hit as the title has been changed.
+
 ## 1.4.1 (Oct 16, 2021)
 
 Switch to npm
