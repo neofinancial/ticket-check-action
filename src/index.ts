@@ -125,7 +125,12 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+      if (
+        titleFormat.includes('%id%') &&
+        id &&
+        !title.includes(id) &&
+        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+      ) {
         client.pulls.update({
           owner,
           repo,
@@ -195,7 +200,12 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+      if (
+        titleFormat.includes('%id%') &&
+        id &&
+        !title.includes(id) &&
+        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+      ) {
         client.pulls.update({
           owner,
           repo,
@@ -260,7 +270,12 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (!title.includes(id) && !title.includes(ticketPrefix)) {
+      if (
+        titleFormat.includes('%id%') &&
+        id &&
+        !title.includes(id) &&
+        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+      ) {
         client.pulls.update({
           owner,
           repo,
