@@ -125,24 +125,26 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (
-        titleFormat.includes('%id%') &&
-        id &&
-        !title.includes(id) &&
-        titleFormat.includes('%prefix%') &&
-        ticketPrefix &&
-        !title.includes(ticketPrefix)
-      ) {
-        client.pulls.update({
-          owner,
-          repo,
-          pull_number: number,
-          title: titleFormat
-            .replace('%prefix%', ticketPrefix)
-            .replace('%id%', id)
-            .replace('%title%', title)
-        });
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
       }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      client.pulls.update({
+        owner,
+        repo,
+        pull_number: number,
+        title: newTitle.replace('%title%', title)
+      });
 
       if (!quiet) {
         client.pulls.createReview({
@@ -202,24 +204,26 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (
-        titleFormat.includes('%id%') &&
-        id &&
-        !title.includes(id) &&
-        titleFormat.includes('%prefix%') &&
-        ticketPrefix &&
-        !title.includes(ticketPrefix)
-      ) {
-        client.pulls.update({
-          owner,
-          repo,
-          pull_number: number,
-          title: titleFormat
-            .replace('%prefix%', ticketPrefix)
-            .replace('%id%', id)
-            .replace('%title%', title)
-        });
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
       }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      client.pulls.update({
+        owner,
+        repo,
+        pull_number: number,
+        title: newTitle.replace('%title%', title)
+      });
 
       if (!quiet) {
         client.pulls.createReview({
@@ -274,24 +278,26 @@ async function run(): Promise<void> {
         return;
       }
 
-      if (
-        titleFormat.includes('%id%') &&
-        id &&
-        !title.includes(id) &&
-        titleFormat.includes('%prefix%') &&
-        ticketPrefix &&
-        !title.includes(ticketPrefix)
-      ) {
-        client.pulls.update({
-          owner,
-          repo,
-          pull_number: number,
-          title: titleFormat
-            .replace('%prefix%', ticketPrefix)
-            .replace('%id%', id)
-            .replace('%title%', title)
-        });
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
       }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      client.pulls.update({
+        owner,
+        repo,
+        pull_number: number,
+        title: newTitle.replace('%title%', title)
+      });
 
       if (!quiet) {
         client.pulls.createReview({
