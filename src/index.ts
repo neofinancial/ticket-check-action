@@ -139,6 +139,11 @@ async function run(): Promise<void> {
         newTitle = newTitle.replace('%prefix%', '');
       }
 
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
+      }
+
       client.pulls.update({
         owner,
         repo,
@@ -218,6 +223,11 @@ async function run(): Promise<void> {
         newTitle = newTitle.replace('%prefix%', '');
       }
 
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
+      }
+
       client.pulls.update({
         owner,
         repo,
@@ -290,6 +300,11 @@ async function run(): Promise<void> {
         newTitle = newTitle.replace('%prefix%', ticketPrefix);
       } else {
         newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
       }
 
       client.pulls.update({
