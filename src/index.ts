@@ -129,7 +129,9 @@ async function run(): Promise<void> {
         titleFormat.includes('%id%') &&
         id &&
         !title.includes(id) &&
-        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+        titleFormat.includes('%prefix%') &&
+        ticketPrefix &&
+        !title.includes(ticketPrefix)
       ) {
         client.pulls.update({
           owner,
@@ -204,7 +206,9 @@ async function run(): Promise<void> {
         titleFormat.includes('%id%') &&
         id &&
         !title.includes(id) &&
-        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+        titleFormat.includes('%prefix%') &&
+        ticketPrefix &&
+        !title.includes(ticketPrefix)
       ) {
         client.pulls.update({
           owner,
@@ -274,7 +278,9 @@ async function run(): Promise<void> {
         titleFormat.includes('%id%') &&
         id &&
         !title.includes(id) &&
-        titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)
+        titleFormat.includes('%prefix%') &&
+        ticketPrefix &&
+        !title.includes(ticketPrefix)
       ) {
         client.pulls.update({
           owner,
