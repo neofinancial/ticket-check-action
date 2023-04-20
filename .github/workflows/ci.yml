@@ -31,3 +31,5 @@ jobs:
           tag: 'v2 --force'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3
