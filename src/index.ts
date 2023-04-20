@@ -125,14 +125,30 @@ async function run(): Promise<void> {
         return;
       }
 
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
+      }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
+      }
+
       client.pulls.update({
         owner,
         repo,
         pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
@@ -193,14 +209,30 @@ async function run(): Promise<void> {
         return;
       }
 
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
+      }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
+      }
+
       client.pulls.update({
         owner,
         repo,
         pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
@@ -256,14 +288,30 @@ async function run(): Promise<void> {
         return;
       }
 
+      let newTitle = '';
+
+      if (titleFormat.includes('%id%') && id && !title.includes(id)) {
+        newTitle = titleFormat.replace('%id%', id);
+      } else {
+        newTitle = titleFormat.replace('%id%', '');
+      }
+
+      if (titleFormat.includes('%prefix%') && ticketPrefix && !title.includes(ticketPrefix)) {
+        newTitle = newTitle.replace('%prefix%', ticketPrefix);
+      } else {
+        newTitle = newTitle.replace('%prefix%', '');
+      }
+
+      if (title.includes(ticketPrefix) && title.includes(id)) {
+        // if both have already been updated just leave it alone
+        newTitle = title;
+      }
+
       client.pulls.update({
         owner,
         repo,
         pull_number: number,
-        title: titleFormat
-          .replace('%prefix%', ticketPrefix)
-          .replace('%id%', id)
-          .replace('%title%', title)
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
