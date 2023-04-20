@@ -1,7 +1,7 @@
 {
   "name": "ticket-check-action",
   "description": "Verify that your pull request titles start with a ticket ID",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
   "license": "MIT",
   "repository": {
@@ -37,16 +37,16 @@
     ]
   },
   "devDependencies": {
-    "@actions/core": "1.2.6",
-    "@actions/github": "4.0.0",
-    "@types/node": "13.11.0",
-    "@vercel/ncc": "0.25.1",
-    "eslint": "^7.32.0",
-    "eslint-config-neo": "0.5.2",
-    "husky": "^4.2.3",
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.0.0",
+    "@types/node": "^16.11.7",
+    "@vercel/ncc": "^0.36.1",
+    "eslint": "^8.34.0",
+    "eslint-config-neo": "^0.7.0",
+    "husky": "^8.0.3",
     "is-plain-object": "^5.0.0",
-    "lint-staged": "^10.1.1",
-    "prettier": "1.19.1",
-    "typescript": "3.8.3"
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.7",
+    "typescript": "^4.7.4"
   }
 }

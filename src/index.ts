@@ -75,7 +75,7 @@ async function run(): Promise<void> {
 
       const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
 
-      const currentReviews = await client.pulls.listReviews({
+      const currentReviews = await client.rest.pulls.listReviews({
         owner,
         repo,
         pull_number: number
@@ -92,7 +92,7 @@ async function run(): Promise<void> {
         return;
       }
 
-      client.pulls.createReview({
+      client.rest.pulls.createReview({
         owner,
         repo,
         pull_number: number,
@@ -144,7 +144,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -152,7 +152,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,
@@ -228,7 +228,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -236,7 +236,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,
@@ -307,7 +307,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -315,7 +315,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,

@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0 (Apr 20, 2023)
+Set action node version to 16
+Update `EndBug/add-and-commit` to V9
+Update `@actions/core` to `1.10.0`
+Update `@actions/github` to `5.0.0`
+Update `@types/node` to `16.11.7`
+Update `@vercel/ncc` to `0.36.1`
+Update `eslint` to `8.34.0`
+Update `eslint-config-neo` to `0.7.0`
+Update `husky` to `8.0.3`
+Update `lint-staged` to `13.2.1`
+Update `prettier` to `2.8.7`
+Update `typescript` to `4.7.4`
+
 ## 1.5.0 (Feb 16, 2023)
 
 Changed the order of checks to do title last as the other checks can impact it by changing the title.
