@@ -10,6 +10,10 @@
   },
   "main": "lib/main.js",
   "private": true,
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "build": "NODE_ENV=production ncc build src/main.ts -o build --minify",
     "format": "prettier --write **/*.ts",
