@@ -15,6 +15,7 @@
     "format": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\"",
+    "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
   "keywords": [
