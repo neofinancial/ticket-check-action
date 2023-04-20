@@ -1,0 +1,46 @@
+name: Release Next
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'The source branch to build. Default main.'
+        default: main
+        required: true
+      releaseBranch:
+        description: 'The release branch to commit to. Default next.'
+        default: next
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+      - name: Install
+        run: npm install --prefer-offline
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Remove dev dependencies
+        run: npm install --omit dev --prefer-offline
+      - name: Commit
+        uses: endbug/add-and-commit@45a4ede867982d5d85997a82529b1d9dd0328e7f
+        with:
+          add: 'build node_modules --force'
+          branch: ${{ github.event.inputs.releaseBranch }}
+          message: 'Add build output'
+          pull: 'NO-PULL'
+          push: 'origin ${{ github.event.inputs.releaseBranch }} --force'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Reinstall dev dependencies
+        run: npm install --prefer-offline

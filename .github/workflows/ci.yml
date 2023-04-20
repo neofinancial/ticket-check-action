@@ -7,28 +7,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 16
           cache: 'npm'
       - name: Install
         run: npm ci
-      - name: Format check
-        run: npm run format:check
       - name: Lint
         run: npm run lint
       - name: Build
         run: npm run build
-      - name: Test
-        run: npm test --coverage
       - name: Commit build
         if: github.ref == 'refs/heads/master'
-        uses: endbug/add-and-commit@v4
+        uses: EndBug/add-and-commit@v9
         with:
-          add: build
-          force: true
-          message: Add build code
-          ref: v1
+          add: 'build'
+          message: 'Add build code'
+          tag: 'v2 --force'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v3

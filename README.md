@@ -128,3 +128,15 @@ jobs:
 | bodyURLRegexFlags |          | The flags applied to the body regular expression when searching for a URL reference                                                                  | gim                              |
 | exemptUsers       |          | Comma separated string of usernames that will be exempt from all checks. Most useful for bot/automated PRs (example "octocat,dependabot")            |                                  |
 | quiet             |          | If `true`, don't comment when a PR title is updated                                                                                                  | true                             |
+
+## Releasing
+
+### Publishing a release
+
+To publish a release use the [Release](https://github.com/neofinancial/ticket-check-action/actions/workflows/release.yml) workflow. When you run the workflow it will ask you for a version tag like `v2.0.0`. This should be the full version number of the new release. It will also ask you for a major version number like `v2`. This allows you to reference the release as either `@v2` of `@v2.0.0`. You can also reference the hash of the release for additional security.
+
+After the workflow runs a draft release will be created on GitHub. Edit the release and copy the CHANGELOG entries into the description. Then publish the release, including publishing to the GitHub Marketplace.
+
+### Creating a preview Release
+
+To create a preview release use the [Release Next](https://github.com/neofinancial/ticket-check-action/actions/workflows/release-next.yml) workflow. When you run the workflow it will ask you for the name of the branch to build. This should be the feature branch that you want to test. The release will be published to the `next` branch and you can use `neofinancial/ticket-check-action@next` in your workflows to test the preview release.

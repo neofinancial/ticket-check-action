@@ -4,6 +4,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
     "target": "es2018",
     "lib": ["es2018"],
     "moduleResolution": "node",
