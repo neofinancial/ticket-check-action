@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { debug as log, getInput, setFailed } from '@actions/core';
 import { context, getOctokit } from '@actions/github';
 
@@ -21,7 +19,7 @@ const debug = (label: string, message: string): void => {
   log('');
 };
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     // Provide complete context object right away if debugging
     debug('context', JSON.stringify(context));
@@ -75,7 +73,7 @@ async function run(): Promise<void> {
 
       const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
 
-      const currentReviews = await client.pulls.listReviews({
+      const currentReviews = await client.rest.pulls.listReviews({
         owner,
         repo,
         pull_number: number,
@@ -92,7 +90,7 @@ async function run(): Promise<void> {
         return;
       }
 
-      client.pulls.createReview({
+      client.rest.pulls.createReview({
         owner,
         repo,
         pull_number: number,
@@ -144,7 +142,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -152,7 +150,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,
@@ -227,7 +225,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -235,7 +233,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,
@@ -305,7 +303,7 @@ async function run(): Promise<void> {
         newTitle = title;
       }
 
-      client.pulls.update({
+      client.rest.pulls.update({
         owner,
         repo,
         pull_number: number,
@@ -313,7 +311,7 @@ async function run(): Promise<void> {
       });
 
       if (!quiet) {
-        client.pulls.createReview({
+        client.rest.pulls.createReview({
           owner,
           repo,
           pull_number: number,
@@ -333,5 +331,3 @@ async function run(): Promise<void> {
     setFailed(error.message);
   }
 }
-
-run();
