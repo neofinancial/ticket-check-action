@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { debug as log, getInput, setFailed } from '@actions/core';
 import { context, getOctokit } from '@actions/github';
 
