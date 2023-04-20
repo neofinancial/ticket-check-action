@@ -11,12 +11,13 @@
   "main": "lib/main.js",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production ncc build src/index.ts -o build --minify",
+    "build": "NODE_ENV=production ncc build src/main.ts -o build --minify",
     "format": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\"",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "test": "jest"
   },
   "keywords": [
     "actions",

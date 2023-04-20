@@ -19,7 +19,7 @@ const debug = (label: string, message: string): void => {
   log('');
 };
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     // Provide complete context object right away if debugging
     debug('context', JSON.stringify(context));
