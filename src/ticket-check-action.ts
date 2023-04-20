@@ -331,5 +331,3 @@ export async function run(): Promise<void> {
     setFailed(error.message);
   }
 }
-
-run();
