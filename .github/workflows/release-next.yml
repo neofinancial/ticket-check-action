@@ -33,7 +33,7 @@ jobs:
       - name: Remove dev dependencies
         run: npm install --omit dev --prefer-offline
       - name: Commit
-        uses: endbug/add-and-commit@v9
+        uses: endbug/add-and-commit@45a4ede867982d5d85997a82529b1d9dd0328e7f
         with:
           add: 'build node_modules --force'
           branch: ${{ github.event.inputs.releaseBranch }}
