@@ -14,13 +14,13 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: neo-x86-medium
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 16
           cache: npm
