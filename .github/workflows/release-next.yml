@@ -14,7 +14,7 @@ on:
 
 jobs:
   release:
-    runs-on: neo-x86-medium
+    runs-on: neo-x86-small
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4

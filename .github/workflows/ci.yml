@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: neo-x86-medium
+    runs-on: neo-x86-small
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
