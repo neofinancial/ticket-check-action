@@ -28,7 +28,7 @@ export async function run(): Promise<void> {
     const title: string = context?.payload?.pull_request?.title;
     const titleRegexBase = getInput('titleRegex', { required: true });
     const titleRegexFlags = getInput('titleRegexFlags', {
-      required: true,
+      required: true
     });
     const ticketLink = getInput('ticketLink', { required: false });
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
@@ -47,7 +47,7 @@ export async function run(): Promise<void> {
     // Exempt Users
     const exemptUsers = getInput('exemptUsers', { required: false })
       .split(',')
-      .map((user) => user.trim());
+      .map(user => user.trim());
 
     const linkTicket = async (matchArray: RegExpMatchArray): Promise<void> => {
       debug('match array for linkTicket', JSON.stringify(matchArray));
@@ -73,15 +73,13 @@ export async function run(): Promise<void> {
 
       const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
 
-      let currentReviews = await client.rest.pulls.listReviews({
+      const currentReviews = await client.rest.pulls.listReviews({
         owner,
         repo,
-        pull_number: number,
+        pullNumber: number
       });
 
-      currentReviews = {}; 
-
-      debug('current reviews', JSON.stringify(currentReviews));
+      // debug('current reviews', JSON.stringify(currentReviews));
 
       if (
         currentReviews?.data?.length &&
@@ -94,9 +92,9 @@ export async function run(): Promise<void> {
       client.rest.pulls.createReview({
         owner,
         repo,
-        pull_number: number,
+        pullNumber: number,
         body: `See the ticket for this pull request: ${linkToTicket}`,
-        event: 'COMMENT',
+        event: 'COMMENT'
       });
     };
 
@@ -110,7 +108,7 @@ export async function run(): Promise<void> {
     const branch: string = context.payload.pull_request?.head.ref;
     const branchRegexBase = getInput('branchRegex', { required: true });
     const branchRegexFlags = getInput('branchRegexFlags', {
-      required: true,
+      required: true
     });
     const branchRegex = new RegExp(branchRegexBase, branchRegexFlags);
     const branchCheck = branchRegex.exec(branch);
@@ -148,17 +146,18 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pull_number: number,
-        title: newTitle.replace('%title%', title),
+        pullNumber: number,
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pull_number: number,
-          body: "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-          event: 'COMMENT',
+          pullNumber: number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
         });
       }
 
@@ -231,17 +230,18 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pull_number: number,
-        title: newTitle.replace('%title%', title),
+        pullNumber: number,
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pull_number: number,
-          body: "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-          event: 'COMMENT',
+          pullNumber: number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
         });
       }
 
@@ -271,7 +271,7 @@ export async function run(): Promise<void> {
     }
 
     const bodyURLRegexFlags = getInput('bodyURLRegexFlags', {
-      required: true,
+      required: true
     });
     const bodyURLRegex = new RegExp(bodyURLRegexBase, bodyURLRegexFlags);
     const bodyURLCheck = bodyURLRegex.exec(body);
@@ -309,17 +309,18 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pull_number: number,
-        title: newTitle.replace('%title%', title),
+        pullNumber: number,
+        title: newTitle.replace('%title%', title)
       });
 
       if (!quiet) {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pull_number: number,
-          body: "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
-          event: 'COMMENT',
+          pullNumber: number,
+          body:
+            "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
+          event: 'COMMENT'
         });
       }
     }
