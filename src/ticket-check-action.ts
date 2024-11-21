@@ -76,7 +76,7 @@ export async function run(): Promise<void> {
       const currentReviews = await client.rest.pulls.listReviews({
         owner,
         repo,
-        pullNumber: number
+        pull_number: number
       });
 
       // debug('current reviews', JSON.stringify(currentReviews));
@@ -92,7 +92,7 @@ export async function run(): Promise<void> {
       client.rest.pulls.createReview({
         owner,
         repo,
-        pullNumber: number,
+        pull_number: number,
         body: `See the ticket for this pull request: ${linkToTicket}`,
         event: 'COMMENT'
       });
@@ -146,7 +146,7 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pullNumber: number,
+        pull_number: number,
         title: newTitle.replace('%title%', title)
       });
 
@@ -154,7 +154,7 @@ export async function run(): Promise<void> {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pullNumber: number,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the branch name but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -230,7 +230,7 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pullNumber: number,
+        pull_number: number,
         title: newTitle.replace('%title%', title)
       });
 
@@ -238,7 +238,7 @@ export async function run(): Promise<void> {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pullNumber: number,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
@@ -309,7 +309,7 @@ export async function run(): Promise<void> {
       client.rest.pulls.update({
         owner,
         repo,
-        pullNumber: number,
+        pull_number: number,
         title: newTitle.replace('%title%', title)
       });
 
@@ -317,7 +317,7 @@ export async function run(): Promise<void> {
         client.rest.pulls.createReview({
           owner,
           repo,
-          pullNumber: number,
+          pull_number: number,
           body:
             "Hey! I noticed that your PR contained a reference to the ticket URL in the body but not in the title. I went ahead and updated that for you. Hope you don't mind! ☺️",
           event: 'COMMENT'
