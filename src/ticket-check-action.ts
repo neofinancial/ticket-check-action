@@ -73,11 +73,13 @@ export async function run(): Promise<void> {
 
       const linkToTicket = ticketLink.replace('%ticketNumber%', ticketNumber);
 
-      const currentReviews = await client.rest.pulls.listReviews({
+      let currentReviews = await client.rest.pulls.listReviews({
         owner,
         repo,
         pull_number: number,
       });
+
+      currentReviews = {}; 
 
       debug('current reviews', JSON.stringify(currentReviews));
 
@@ -86,7 +88,6 @@ export async function run(): Promise<void> {
         currentReviews?.data.some((review: { body?: string }) => review?.body?.includes(linkToTicket))
       ) {
         debug('already posted ticketLink', 'found an existing review that contains the ticket link');
-
         return;
       }
 
@@ -102,6 +103,8 @@ export async function run(): Promise<void> {
     // get the title format and ticket prefix
     const ticketPrefix = getInput('ticketPrefix');
     const titleFormat = getInput('titleFormat', { required: true });
+
+    debug('test', ticketPrefix);
 
     // Check for a ticket reference in the branch
     const branch: string = context.payload.pull_request?.head.ref;
