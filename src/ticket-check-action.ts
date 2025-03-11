@@ -1,4 +1,4 @@
-import { debug as log, getInput, setFailed } from '@actions/core';
+import { debug as log, getInput, setFailed, setOutput } from '@actions/core';
 import { context, getOctokit } from '@actions/github';
 
 // Helper function to retrieve ticket number from a string (either a shorthand reference or a full URL)
@@ -33,6 +33,7 @@ export async function run(): Promise<void> {
     const ticketLink = getInput('ticketLink', { required: false });
     const titleRegex = new RegExp(titleRegexBase, titleRegexFlags);
     const titleCheck = titleRegex.exec(title);
+    const outputOnly: boolean = getInput('outputOnly', { required: false }) === 'true';
 
     // Instantiate a GitHub Client instance
     const token = getInput('token', { required: true });
@@ -49,6 +50,10 @@ export async function run(): Promise<void> {
       .split(',')
       .map((user) => user.trim());
 
+      /**
+       * Determines the ticket link and adds the link as review.
+       * In case "outputOnly" is active, it just sets the output "ticketNumber" and returns without adding a review.
+       */
     const linkTicket = async (matchArray: RegExpMatchArray): Promise<void> => {
       debug('match array for linkTicket', JSON.stringify(matchArray));
       debug('match array groups for linkTicket', JSON.stringify(matchArray.groups));
@@ -62,6 +67,12 @@ export async function run(): Promise<void> {
       if (!ticketNumber) {
         debug('ticketNumber not found', 'ticketNumber group not found in match array.');
 
+        return undefined;
+      }
+
+      setOutput("ticketNumber", ticketNumber);
+
+      if (outputOnly) {
         return;
       }
 
@@ -123,6 +134,12 @@ export async function run(): Promise<void> {
         return;
       }
 
+      if (outputOnly) {
+        setOutput("ticketNumber", id);
+
+        return;
+      }
+
       let newTitle = '';
 
       if (titleFormat.includes('%id%') && id && !title.includes(id)) {
@@ -171,7 +188,7 @@ export async function run(): Promise<void> {
     debug('exempt users', exemptUsers.join(','));
     debug('ticket link', ticketLink);
 
-    if (sender && exemptUsers.includes(sender)) {
+    if (!outputOnly && sender && exemptUsers.includes(sender)) {
       debug('success', 'User is listed as exempt');
 
       return;
@@ -202,6 +219,12 @@ export async function run(): Promise<void> {
 
       if (id === null) {
         setFailed('Could not extract a ticket shorthand reference from the body');
+
+        return;
+      }
+
+      if (outputOnly) {
+        setOutput("ticketNumber", id);
 
         return;
       }
@@ -280,6 +303,12 @@ export async function run(): Promise<void> {
 
       if (id === null) {
         setFailed('Could not extract a ticket URL from the body');
+
+        return;
+      }
+
+      if (outputOnly) {
+        setOutput("ticketNumber", id);
 
         return;
       }

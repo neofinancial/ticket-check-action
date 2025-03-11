@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added output `ticketNumber` and option `outptOnly`.
+
 ## 2.0.0 (Apr 20, 2023)
 Set action node version to 16
 
